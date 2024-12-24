@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Tarifas</title>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <style>
+	  body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin: 20px 0;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        h1 img {
+            max-width: 100%;
+            height: auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .whatsapp-button {
+            background-color: #25d366 !important;
+            margin-top: 20px;
+            display: none; /* Inicialmente oculto */
+        }
+        .whatsapp-button:hover {
+            background-color: #128c7e !important;
+        }
+       
+	.suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-width: 400px;
+        background-color: #fff;
+        
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        overflow: hidden;
+    }
+    .suggestion-item {
+        padding: 10px;
+        cursor: pointer;
+        font-size: 0.9em;
+        color: #333;
+        border-bottom: 1px solid #eee;
+    }
+    .suggestion-item:hover {
+        background-color: #f4f4f9;
+    }
+    .input-container {
+    position: relative;
+    width: 70%;
+    max-width: 400px;
+    margin-bottom: 15px; /* Espaciado entre inputs */
+}
+
+.time-slot {
+            margin-top: 10px;
+            display: none;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .time-slot-button {
+            display: block;
+            margin-top: 5px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .time-slot-button:hover {
+            background-color: #0056b3;
+        }
+
+        .whatsapp-button {
+            display: none; /* Se mantendrá oculto hasta seleccionar la hora */
+        }
+
+ .faq-float-btn {
+    position: fixed; /* Fijo en la pantalla */
+    bottom: 20px; /* Espaciado desde la parte inferior */
+    right: 20px; /* Espaciado desde el lado derecho */
+    background-color: #007bff; /* Color del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 50px; /* Botón circular */
+    padding: 15px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para resaltar */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    z-index: 1000; /* Asegura que esté encima de otros elementos */
+    transition: background-color 0.3s ease; /* Efecto suave al pasar el cursor */
+  }
+
+  .faq-float-btn:hover {
+    background-color: #0056b3; /* Color más oscuro al pasar el cursor */
+  }
+
+  /* Estilo para el modal */
+  .modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Fijo en la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    z-index: 999; /* Aparece encima del resto */
+  }
+
+  .modal-content {
+    background-color: white; /* Fondo blanco */
+    margin: 10% auto; /* Centrado vertical y horizontal */
+    padding: 20px;
+    border-radius: 8px; /* Bordes redondeados */
+    width: 90%; /* Ancho del modal */
+    max-width: 500px; /* Máximo ancho */
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+  }
+  
+  button.custom-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #fff !important;
+    background-color: #25d366 !important; /* Color WhatsApp */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#map {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+    </style>
+	</head>
+<body>
+    <h1>
+        <img alt="" src="https://i.ibb.co/ydX5rvq/logo-logistica-sf.png" style="width: 300px; height: auto;"><br>
+    </h1>
+   <div class="input-container">
+    <label for="origin">Dirección de Origen:</label>
+    <input id="origin" type="text" placeholder="Ingresa la dirección de origen">
+    <div id="origin-suggestions" class="suggestions"></div>
+</div>
+<div class="input-container">
+    <label for="destination">Dirección de Destino:</label>
+    <input id="destination" type="text" placeholder="Ingresa la dirección de destino">
+    <div id="destination-suggestions" class="suggestions"></div>
+</div>
+    <button onclick="calculateFareAndDrawRoute()">Calcular Tarifa</button>
+    <div id="result"></div>
+
+    <!-- Botón de WhatsApp, inicialmente oculto -->
+    <a id="whatsapp-button" href="" class="whatsapp-button" target="_blank">
+        <button class="custom-button">Pedir Cadete Ahora</button>
+    </a>
+	
+	 <!-- Nuevo botón para Programar Envíos, inicialmente oculto -->
+    <button id="schedule-button" class="time-slot-button" onclick="toggleTimeSlots()" style="display:none;">Programar Envíos</button> 
+	
+	 <!-- Texto debajo del botón "Programar Envíos", inicialmente oculto -->
+    <div id="program-info" style="display:none; font-size: 14px; color: #666;">
+        *Al programar un envío sólo abona la Tarifa Base.
+    </div>
+
+    <!-- Opciones de horarios para programar -->
+    <div id="time-slots" class="time-slot">
+        <button class="time-slot-button" onclick="selectTimeSlot('8:00 a 10:00')">Enviar entre las 8:00 a 10:00</button>
+        <button class="time-slot-button" onclick="selectTimeSlot('10:00 a 12:00')">Enviar entre las 10:00 a 12:00</button>
+        <button class="time-slot-button" onclick="selectTimeSlot('12:00 a 14:00')">Enviar entre las 12:00 a 14:00</button>
+        <button class="time-slot-button" onclick="selectTimeSlot('14:00 a 16:00')">Enviar entre las 14:00 a 16:00</button>
+        <button class="time-slot-button" onclick="selectTimeSlot('16:00 a 18:00')">Enviar entre las 16:00 a 18:00</button>
+        <button class="time-slot-button" onclick="selectTimeSlot('18:00 a 20:00')">Enviar entre las 18:00 a 20:00</button>
+    </div>
+
+	  <!-- Botón de WhatsApp para el horario programado -->
+    <a id="whatsapp-scheduled-button" href="" class="whatsapp-button" target="_blank">
+        <button class="custom-button" id="scheduled-button-text">Pedir cadete para ese horario</button>
+    </a>
+
+    <!-- Mapa -->
+	<script>
+        // Aquí agregamos la funcionalidad del botón de programar envío
+
+        let selectedTimeSlot = null;
+		let calculatedDistance = null;
+		let calculatedFare = null;
+
+
+        function toggleTimeSlots() {
+            const timeSlotDiv = document.getElementById('time-slots');
+            timeSlotDiv.style.display = (timeSlotDiv.style.display === 'none' || timeSlotDiv.style.display === '') ? 'block' : 'none';
+        }
+
+        function selectTimeSlot(timeSlot) {
+            selectedTimeSlot = timeSlot;
+            document.getElementById('schedule-button').style.display = 'none'; // Ocultar el botón de programar
+            document.getElementById('time-slots').style.display = 'none'; // Ocultar las opciones de horarios
+            document.getElementById('whatsapp-scheduled-button').style.display = 'inline-block'; // Mostrar el botón de WhatsApp para el horario
+			  // Cambiar el texto del botón "Pedir cadete para ese horario"
+            document.getElementById('scheduled-button-text').textContent = `Programar viaje de ${selectedTimeSlot}`;
+        }
+
+        // Función para generar el mensaje de WhatsApp con la hora seleccionada
+        document.getElementById('whatsapp-scheduled-button').onclick = function() {
+    const origin = document.getElementById('origin').value;
+    const destination = document.getElementById('destination').value;
+
+    if (origin && destination && selectedTimeSlot) {
+        let message = `Origen: ${origin} a ${destination}. Horario de: ${selectedTimeSlot}.`;
+
+           // Define la tarifa base según la distancia calculada
+        let baseFare = 0;
+        if (calculatedDistance < 3) {
+            baseFare = 1500;
+        } else if (calculatedDistance >= 3 && calculatedDistance < 5) {
+            baseFare = 2000;
+        } else if (calculatedDistance >= 5 && calculatedDistance < 8) {
+            baseFare = 2500;
+        }
+
+        // Si la tarifa base está calculada correctamente, añade la información al mensaje
+        if (calculatedDistance && baseFare !== null && baseFare !== undefined) {
+            message += ` Distancia:\n- Distancia: ${calculatedDistance} km\n- Tarifa Base: $${baseFare.toFixed(2)}`;
+        }
+
+        const whatsappUrl = `https://wa.me/5493424734353?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    } else {
+        alert('Por favor, completa todos los campos antes de programar.');
+    }
+};
+
+    </script>
+
+    <script>
+        let platform = new H.service.Platform({
+            apikey: '2XxPJwh913nXhT83TPnlq100Sp8_FxF4ZmGT8p-xlsM'
+        });
+        let originCoordinates = null;
+        let destinationCoordinates = null;
+        let userCoordinates = null;
+        let map;
+        let routingService;
+        let mapObjects = [];
+
+        function initializeAutocomplete() {
+            setupAutocomplete('origin', 'origin-suggestions');
+            setupAutocomplete('destination', 'destination-suggestions');
+            getUserLocation();
+        }
+
+        function setupAutocomplete(inputId, suggestionId) {
+            const input = document.getElementById(inputId);
+            const suggestionBox = document.getElementById(suggestionId);
+
+            input.addEventListener('input', () => {
+                const query = input.value;
+                if (!query) {
+                    suggestionBox.innerHTML = '';
+                    return;
+                }
+
+                const searchService = platform.getSearchService();
+                searchService.autosuggest({
+                    q: query,
+                    at: '-31.633,-60.701' // Centro de Santa Fe
+                }, (result) => {
+                    suggestionBox.innerHTML = '';
+                    result.items.forEach((item) => {
+                        const div = document.createElement('div');
+                        div.className = 'suggestion-item';
+                        div.textContent = item.address.label;
+                        div.onclick = () => {
+                            input.value = item.address.label;
+                            suggestionBox.innerHTML = '';
+                            if (inputId === 'origin') {
+                                originCoordinates = item.position;
+                            } else {
+                                destinationCoordinates = item.position;
+                            }
+                        };
+                        suggestionBox.appendChild(div);
+                    });
+                }, (error) => {
+                    console.error('Error en el autocompletado:', error);
+                });
+            });
+        }
+
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    userCoordinates = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                }, (error) => {
+                    console.error('Error al obtener la ubicación del usuario:', error);
+                });
+            } else {
+                alert('La geolocalización no está soportada por este navegador.');
+            }
+        }
+
+			function calculateFareAndDrawRoute() {
+				if (!originCoordinates || !destinationCoordinates || !userCoordinates) {
+					alert('Por favor, selecciona tanto la dirección de origen como la de destino y asegúrate de que tu ubicación esté habilitada.');
+					return;
+				}
+
+				const baseUrl = 'https://router.hereapi.com/v8/routes';
+				const url = `${baseUrl}?apikey=2XxPJwh913nXhT83TPnlq100Sp8_FxF4ZmGT8p-xlsM&transportMode=car&origin=${originCoordinates.lat},${originCoordinates.lng}&destination=${destinationCoordinates.lat},${destinationCoordinates.lng}&return=polyline,summary`;
+
+				fetch(url)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`Error HTTP: ${response.status}`);
+						}
+						return response.json();
+					})
+					.then(data => {
+						if (!data.routes || data.routes.length === 0) {
+							alert('No se encontraron rutas. Verifica las direcciones seleccionadas.');
+							return;
+						}
+
+						const route = data.routes[0].sections[0];
+						const distanceInMeters = route.summary.length;
+						const distanceInKm = distanceInMeters / 1000;
+						
+						
+						let baseFare = 0;
+						if (distanceInKm < 3) {
+							baseFare = 1500;
+						} else if (distanceInKm >= 3 && distanceInKm < 5) {
+							baseFare = 2000;
+						} else if (distanceInKm >= 5 && distanceInKm < 8) {
+							baseFare = 2500;
+						}
+
+						const userDistanceUrl = `${baseUrl}?apikey=2XxPJwh913nXhT83TPnlq100Sp8_FxF4ZmGT8p-xlsM&transportMode=car&origin=${userCoordinates.lat},${userCoordinates.lng}&destination=${originCoordinates.lat},${originCoordinates.lng}&return=summary`;
+
+						fetch(userDistanceUrl)
+							.then(userResponse => {
+								if (!userResponse.ok) {
+									throw new Error(`Error HTTP: ${userResponse.status}`);
+								}
+								return userResponse.json();
+							})
+							.then(userData => {
+								if (!userData.routes || userData.routes.length === 0) {
+									alert('No se pudo calcular la distancia al punto de retiro. Intenta de nuevo.');
+									return;
+								}
+
+								const userRoute = userData.routes[0].sections[0];
+								const userDistanceInMeters = userRoute.summary.length;
+								const userDistanceInKm = userDistanceInMeters / 1000;
+
+								let pickupFare;
+								if (userDistanceInKm <= 3) {
+									pickupFare = 500;
+								} else if (userDistanceInKm > 3 && userDistanceInKm <= 5) {
+									pickupFare = 700;
+								} else {
+                                pickupFare = 1000;
+                            }
+
+                            const totalFare = baseFare + pickupFare;
+							
+							// Guardar valores en las variables globales
+							calculatedDistance = distanceInKm.toFixed(2);
+							calculatedFare = totalFare.toFixed(2);
+                            
+                            const fareMessage = `
+                                Distancia: ${distanceInKm.toFixed(2)} km<br>
+                                Tarifa Base: $${baseFare.toFixed(2)}<br>
+                                Adicional al punto de retiro: $${pickupFare.toFixed(2)}<br>
+                                <strong>Tarifa Total: $${totalFare.toFixed(2)}</strong>
+                            `;
+                            document.getElementById('result').innerHTML = fareMessage;
+                            document.getElementById('result').style.display = 'block';
+
+                            const message = encodeURIComponent(`
+*Detalles del envío:*
+- *Distancia:* ${distanceInKm.toFixed(2)} km
+- *Tarifa:* $${totalFare.toFixed(2)}
+- *Origen:* ${document.getElementById('origin').value}
+- *Destino:* ${document.getElementById('destination').value}
+`);
+                            const whatsappUrl = `https://wa.me/5493424734353?text=${message}`;
+                            document.getElementById('whatsapp-button').setAttribute('href', whatsappUrl);
+                            document.getElementById('whatsapp-button').style.display = 'inline-block';
+							document.getElementById('schedule-button').style.display = 'inline-block';
+							document.getElementById('program-info').style.display = 'inline-block'; // Mostrar el texto debajo del botón
+
+                            
+                        })
+                        .catch(userError => {
+                            console.error('Error al obtener la distancia al punto de retiro:', userError);
+                        });
+                })
+                .catch(error => {
+                    console.error('Error al calcular la tarifa:', error);
+                    alert('Hubo un problema al calcular la tarifa. Intenta de nuevo.');
+                });
+        }
+
+        
+
+        window.onload = initializeAutocomplete;
+		document.addEventListener('DOMContentLoaded', () => {
+            let defaultLayers = platform.createDefaultLayers();
+            map = new H.Map(
+                document.getElementById('map'),
+                defaultLayers.vector.normal.map,
+                {
+                    center: { lat: -31.633, lng: -60.701 },
+                    zoom: 14,
+                    pixelRatio: window.devicePixelRatio || 1
+                }
+            );
+
+            let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+            let ui = H.ui.UI.createDefault(map, defaultLayers);
+        });
+    </script>
+	<!-- Contenedor para las FAQ -->
+<section id="faq" style="margin-top: 30px;">
+
+<script>
+    document.querySelectorAll('.faq-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+
+        // Alterna la visibilidad
+        if (content.style.display === 'none' || !content.style.display) {
+          content.style.display = 'block';
+        } else {
+          content.style.display = 'none';
+        }
+      });
+    });
+	function toggleModal() {
+    const modal = document.getElementById('faq-modal');
+    modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+}
+
+  </script>
+<button class="faq-float-btn" onclick="toggleModal()">¿Preguntas?</button>
+<div id="faq-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="toggleModal()">&times;</span>
+         <h2>Preguntas Frecuentes</h2>
+    <div>
+    <button class="faq-toggle">¿Que puedo enviar y que no?</button>
+    <p class="faq-content">* No hacemos compras ni trámites a tu nombre.</br>
+* No podemos llevar productos químicos, armas, dinero, joyas o sustancias prohibidas.</br>
+* No podemos llevar paquetes que pesen mas de 10kg.</p>
+  </div>
+  <div>
+    <button class="faq-toggle">¿Cómo sé cuánto costará mi viaje?</button>
+    <p class="faq-content" >Ingresa el origen y el destino en los campos correspondientes. Asegúrate que la dirección elegida sea la que buscas.El precio se calcula automáticamente.</p>
+  </div>
+  <div>
+    <button class="faq-toggle">¿Puedo cancelar un pedido?</button>
+    <p class="faq-content" >Sí, puedes cancelar el pedido. Una vez que solicites catede, podrás cancelarlo directamente desde WhatsApp.</p>
+  </div>
+  <div>
+    <button class="faq-toggle">¿El servicio funciona las 24 horas?</button>
+    <p class="faq-content" >Lunes a Sábados de 8 AM a 20 PM.</p>
+  </div>
+</section>
+
+<!-- Contenedor para los Métodos de Pago -->
+<section id="payment-methods" style="margin-top: 30px;">
+  <h2>Métodos de Pago</h2>
+  <ul>
+    <li>Efectivo</li>
+    <li>Transferencia bancaria</li>
+    <li>Mercado Pago</li>
+    
+  </ul>
+</section>
+    </div>
+</div>
+ 
+
+</body>
+</html>
