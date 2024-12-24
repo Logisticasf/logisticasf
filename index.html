@@ -277,8 +277,13 @@
             const destination = document.getElementById('destination').value;
 
             if (origin && destination && selectedTimeSlot) {
-                const message = `Hola, quiero programar un envío de ${origin} a ${destination}. El horario seleccionado es de ${selectedTimeSlot}.`;
-                const whatsappUrl = `https://wa.me/5493424734353?text=${encodeURIComponent(message)}`;
+		  const message = `*Detalles del envío:*
+        - *Hora del envío:* ${selectedTimeSlot}
+        - *Distancia:* ${distanceInKm ? distanceInKm.toFixed(2) : '0'} km
+        - *Tarifa:* $${totalFare ? totalFare.toFixed(2) : '0.00'}
+        - *Origen:* ${origin}
+        - *Destino:* ${destination}`;	
+		const whatsappUrl = `https://wa.me/5493424734353?text=${encodeURIComponent(message)}`;
                 window.open(whatsappUrl, '_blank');
             } else {
                 alert('Por favor, completa todos los campos antes de programar.');
