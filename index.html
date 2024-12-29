@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Tarifas</title>
+    <title>Logística Santa Fe</title>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
@@ -287,7 +287,7 @@
 
 label {
     font-size: 14px;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 input {
@@ -430,6 +430,8 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
             document.getElementById('scheduled-button-text').textContent = `Programar viaje de ${selectedTimeSlot}`;
         }
 
+		    // Cargar el sonido de confirmación
+    const successSound = new Audio("success.mp3");
         // Función para generar el mensaje de WhatsApp con la hora seleccionada
         document.getElementById('whatsapp-scheduled-button').onclick = function() {
     const origin = document.getElementById('origin').value;
@@ -454,12 +456,29 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
         }
 
         const whatsappUrl = `https://wa.me/5493424734353?text=${encodeURIComponent(message)}`;
+		
         window.open(whatsappUrl, '_blank');
-		location.reload(); // Recarga la página automáticamente
-    } else {
-        alert('Por favor, completa todos los campos antes de programar.');
-    }
-};
+		
+		  // Reproducir sonido de confirmación después de un retraso de 1 segundo
+            setTimeout(() => {
+                successSound.play()
+                    .then(() => {
+                        console.log("Sonido reproducido correctamente.");
+                    })
+                    .catch(error => {
+                        console.error("Error al reproducir el sonido:", error);
+                    });
+            }, 1000); // 1 segundo de retraso para permitir que WhatsApp se abra antes de reproducir el sonido
+
+            // Redirige al nuevo HTML después de un pequeño retraso
+            setTimeout(() => {
+                window.location.href = 'confirmacion.html'; // Cambia por la URL de tu archivo
+            }, 4000); // Redirige después de 2 segundos para que el sonido se reproduzca
+
+        } else {
+            alert('Por favor, completa todos los campos antes de programar.');
+        }
+    };
 
     </script>
 
@@ -588,15 +607,19 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 								const userDistanceInMeters = userRoute.summary.length;
 								const userDistanceInKm = userDistanceInMeters / 1000;
 
-								let pickupFare;
-								if (userDistanceInKm <= 3) {
-									pickupFare = 500;
-								} else if (userDistanceInKm > 3 && userDistanceInKm <= 5) {
-									pickupFare = 700;
-								} else {
-                                pickupFare = 1000;
-                            }
+								  let pickupFare;
 
+        if (userDistanceInKm > 0 && userDistanceInKm < 1.5) {
+            pickupFare = 200;
+        } else if (userDistanceInKm >= 1.5 && userDistanceInKm <= 3) {
+            pickupFare = 400;
+        } else if (userDistanceInKm > 3 && userDistanceInKm <= 5) {
+            pickupFare = 700;
+        } else {
+            pickupFare = 1000;
+        }
+
+								
                             const totalFare = baseFare + pickupFare;
 							
 							// Guardar valores en las variables globales
@@ -624,6 +647,27 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
                             document.getElementById('whatsapp-button').style.display = 'inline-block';
 							document.getElementById('schedule-button').style.display = 'inline-block';
 							document.getElementById('program-info').style.display = 'inline-block'; // Mostrar el texto debajo del botón
+							
+							// Escucha el clic en el botón de WhatsApp
+document.getElementById('whatsapp-button').addEventListener('click', (event) => {
+    event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+    window.open(whatsappUrl, '_blank'); // Abre WhatsApp en una nueva pestaña
+    // Reproducir sonido de confirmación después de un retraso de 1 segundo
+    setTimeout(() => {
+        successSound.play()
+            .then(() => {
+                console.log("Sonido reproducido correctamente.");
+            })
+            .catch(error => {
+                console.error("Error al reproducir el sonido:", error);
+            });
+    }, 1000); // 1 segundo de retraso para permitir que WhatsApp se abra antes de reproducir el sonido
+
+    // Redirige al nuevo HTML después de un pequeño retraso
+    setTimeout(() => {
+        window.location.href = 'confirmacion.html'; // Cambia por la URL de tu archivo
+    }, 4000); // Redirige después de 4 segundos para que el sonido se reproduzca
+});
 
                             
                         })
