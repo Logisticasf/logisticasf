@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logística Santa Fe</title>
+    <title>Calculadora de Tarifas</title>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
@@ -299,12 +299,19 @@ input {
 }
 
 
-	
     </style>
 	</head>
+	
 <body>
+  <div class="horarios">
+    <div class="container text-center mt-3 mb-3">
+    <div class="bg-primary text-white py-2 rounded shadow-sm horarios">
+    </div>
+</div>
+</div>
+
     <h1>
-        <img alt="" src="https://i.ibb.co/ydX5rvq/logo-logistica-sf.png" style="width: 300px; height: auto;"><br>
+        <img alt="" src="https://i.ibb.co/g9PWfqG/logo-logistica.png" style="width: 300px; height: auto;"><br>
     </h1>
  <div class="route-container">
     <div class="input-container">
@@ -333,6 +340,7 @@ input {
 
     <button onclick="calculateFareAndDrawRoute()">Calcular Tarifa</button>
     <div id="result"></div>
+	
 
     <!-- Botón de WhatsApp, inicialmente oculto -->
     <a id="whatsapp-button" href="" class="whatsapp-button" target="_blank">
@@ -438,7 +446,8 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
     const destination = document.getElementById('destination').value;
 
     if (origin && destination && selectedTimeSlot) {
-        let message = `Origen: ${origin} a ${destination}. Horario de: ${selectedTimeSlot}.`;
+        let message = `*Envío Programado:*\n*Origen:* ${origin}\n*Destino:* ${destination}\n*Horario:* De ${selectedTimeSlot}.`;
+
 
            // Define la tarifa base según la distancia calculada
         let baseFare = 0;
@@ -452,7 +461,7 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 
         // Si la tarifa base está calculada correctamente, añade la información al mensaje
         if (calculatedDistance && baseFare !== null && baseFare !== undefined) {
-            message += ` Distancia:\n- Distancia: ${calculatedDistance} km\n- Tarifa Base: $${baseFare.toFixed(2)}`;
+            message += `\n*Distancia:* ${calculatedDistance} km\n*Tarifa Base:* $${baseFare.toFixed(2)}`;
         }
 
         const whatsappUrl = `https://wa.me/5493424734353?text=${encodeURIComponent(message)}`;
@@ -722,6 +731,7 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
 }
 
   </script>
+
 <button class="faq-float-btn" onclick="toggleModal()">¿Preguntas?</button>
 <div id="faq-modal" class="modal" style="display:none;">
     <div class="modal-content">
