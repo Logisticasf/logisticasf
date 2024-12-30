@@ -297,22 +297,23 @@ input {
     font-size: 14px;
     width: 100%;
 }
-
+.main-container {
+    padding: 10px; /* Espacio alrededor del contenedor principal */
+    width: 100%; /* Asegura que ocupe el 100% del ancho disponible */
+    max-width: 300px; /* Limita el ancho máximo a 900px, puedes ajustarlo a lo que necesites */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    box-sizing: border-box; /* Para que el padding no afecte el tamaño total */
+}
 
     </style>
 	</head>
 	
 <body>
-  <div class="horarios">
-    <div class="container text-center mt-3 mb-3">
-    <div class="bg-primary text-white py-2 rounded shadow-sm horarios">
-    </div>
-</div>
-</div>
 
     <h1>
         <img alt="" src="https://i.ibb.co/g9PWfqG/logo-logistica.png" style="width: 300px; height: auto;"><br>
     </h1>
+<div class="main-container">	
  <div class="route-container">
     <div class="input-container">
         <div class="marker">
@@ -335,6 +336,7 @@ input {
             <div id="destination-suggestions" class="suggestions"></div>
         </div>
     </div>
+	 </div>
 </div>
 
 
@@ -352,7 +354,7 @@ input {
 	
 	 <!-- Texto debajo del botón "Programar Envíos", inicialmente oculto -->
     <div id="program-info" style="display:none; font-size: 14px; color: #666;">
-        *Al programar un envío sólo abona la Tarifa Base.
+        <strong>*Al programar un envío sólo abona la Tarifa Base.</strong>
     </div>
 
     <!-- Opciones de horarios para programar -->
@@ -450,14 +452,20 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 
 
            // Define la tarifa base según la distancia calculada
-        let baseFare = 0;
+        let baseFare = null;
         if (calculatedDistance < 3) {
             baseFare = 1500;
         } else if (calculatedDistance >= 3 && calculatedDistance < 5) {
             baseFare = 2000;
         } else if (calculatedDistance >= 5 && calculatedDistance < 8) {
             baseFare = 2500;
-        }
+        } else if (calculatedDistance >= 8) {
+        // Maneja el caso de distancias superiores a 8 km
+        message = "Lo sentimos, no podemos realizar ese viaje.";
+        alert(message);
+        return; // Sal del flujo para evitar ejecutar el resto del código
+    }
+
 
         // Si la tarifa base está calculada correctamente, añade la información al mensaje
         if (calculatedDistance && baseFare !== null && baseFare !== undefined) {
@@ -588,14 +596,19 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 						const distanceInKm = distanceInMeters / 1000;
 						
 						
-						let baseFare = 0;
+						let baseFare = null;
 						if (distanceInKm < 3) {
 							baseFare = 1500;
 						} else if (distanceInKm >= 3 && distanceInKm < 5) {
 							baseFare = 2000;
 						} else if (distanceInKm >= 5 && distanceInKm < 8) {
 							baseFare = 2500;
-						}
+						} else if (calculatedDistance >= 8) {
+        // Maneja el caso de distancias superiores a 8 km
+        message = "Lo sentimos, no podemos realizar ese viaje.";
+        alert(message);
+        return; // Sal del flujo para evitar ejecutar el resto del código
+    }
 
 						const userDistanceUrl = `${baseUrl}?apikey=2XxPJwh913nXhT83TPnlq100Sp8_FxF4ZmGT8p-xlsM&transportMode=car&origin=${userCoordinates.lat},${userCoordinates.lng}&destination=${originCoordinates.lat},${originCoordinates.lng}&return=summary`;
 
