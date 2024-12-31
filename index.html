@@ -172,14 +172,16 @@
     z-index: 999; /* Aparece encima del resto */
   }
 
-  .modal-content {
-    background-color: white; /* Fondo blanco */
-    margin: 10% auto; /* Centrado vertical y horizontal */
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
     padding: 20px;
-    border-radius: 8px; /* Bordes redondeados */
-    width: 90%; /* Ancho del modal */
-    max-width: 500px; /* Máximo ancho */
-  }
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh; /* La altura máxima será el 80% de la ventana del navegador */
+    overflow-y: auto;
+}
 
   .close {
     color: #aaa;
@@ -343,7 +345,16 @@ input {
     <button onclick="calculateFareAndDrawRoute()">Calcular Tarifa</button>
     <div id="result"></div>
 	
+<div id="additional-info-container" style="display: none; margin-top: 20px; padding: 10px; background-color:#FFFECF ; border: 1px solid #ddd; border-radius: 8px;">
+    <label for="additional-info" style="font-size: 14px; color:#0056b3; margin-bottom: 8px; display: block;">
+        Agrega datos adicionales si lo deseas
+    </label>
+    <input id="additional-info" type="text" placeholder="Ej: Nro de timbre, quién recibe, etc." 
+           style="width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+</div>
 
+
+	
     <!-- Botón de WhatsApp, inicialmente oculto -->
     <a id="whatsapp-button" href="" class="whatsapp-button" target="_blank">
         <button class="custom-button">Pedir Cadete Ahora</button>
@@ -354,7 +365,7 @@ input {
 	
 	 <!-- Texto debajo del botón "Programar Envíos", inicialmente oculto -->
     <div id="program-info" style="display:none; font-size: 14px; color: #666;">
-        <strong>*Al programar un envío sólo abona la Tarifa Base.</strong>
+        <b>*Al programar un envío sólo abona la Tarifa Base.</b>
     </div>
 
     <!-- Opciones de horarios para programar -->
@@ -446,11 +457,11 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
         document.getElementById('whatsapp-scheduled-button').onclick = function() {
     const origin = document.getElementById('origin').value;
     const destination = document.getElementById('destination').value;
+	const additionalInfo = document.getElementById('additional-info').value;
 
     if (origin && destination && selectedTimeSlot) {
         let message = `*Envío Programado:*\n*Origen:* ${origin}\n*Destino:* ${destination}\n*Horario:* De ${selectedTimeSlot}.`;
-
-
+		
            // Define la tarifa base según la distancia calculada
         let baseFare = null;
         if (calculatedDistance < 3) {
@@ -471,6 +482,11 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
         if (calculatedDistance && baseFare !== null && baseFare !== undefined) {
             message += `\n*Distancia:* ${calculatedDistance} km\n*Tarifa Base:* $${baseFare.toFixed(2)}`;
         }
+
+		 // Si hay información adicional, añadirla al mensaje
+        if (additionalInfo) {
+            message += `\n*Información adicional:* ${additionalInfo}`;
+        }		
 
         const whatsappUrl = `https://wa.me/5493424734353?text=${encodeURIComponent(message)}`;
 		
@@ -568,6 +584,14 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
                 alert('La geolocalización no está soportada por este navegador.');
             }
         }
+		
+		document.addEventListener('DOMContentLoaded', function() {
+    // Captura el valor del input cuando el usuario lo cambia
+    document.getElementById('additional-info').addEventListener('input', function() {
+        console.log("Valor capturado en input:", this.value); // Muestra el valor cada vez que cambia
+    });
+});
+
 
 			function calculateFareAndDrawRoute() {
 				if (!originCoordinates || !destinationCoordinates || !userCoordinates) {
@@ -656,6 +680,10 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
                             `;
                             document.getElementById('result').innerHTML = fareMessage;
                             document.getElementById('result').style.display = 'block';
+							document.getElementById('additional-info-container').style.display = 'inline-block';
+							const additionalInfo = document.getElementById('additional-info').value;
+							 
+							
 
                             const message = encodeURIComponent(`
 *Detalles del envío:*
@@ -663,15 +691,32 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 - *Tarifa:* $${totalFare.toFixed(2)}
 - *Origen:* ${document.getElementById('origin').value}
 - *Destino:* ${document.getElementById('destination').value}
+- *Información adicional:* ${additionalInfo};
+
 `);
+ console.log("Mensaje codificado:", message); // Depuración
                             const whatsappUrl = `https://wa.me/5493424734353?text=${message}`;
                             document.getElementById('whatsapp-button').setAttribute('href', whatsappUrl);
                             document.getElementById('whatsapp-button').style.display = 'inline-block';
 							document.getElementById('schedule-button').style.display = 'inline-block';
 							document.getElementById('program-info').style.display = 'inline-block'; // Mostrar el texto debajo del botón
 							
+							
 							// Escucha el clic en el botón de WhatsApp
 document.getElementById('whatsapp-button').addEventListener('click', (event) => {
+    const additionalInfo = document.getElementById('additional-info').value;
+    console.log("Valor adicional capturado en clic:", additionalInfo); // Verifica que el valor se capture correctamente
+    const message = encodeURIComponent(`
+*Detalles del envío:*
+- *Distancia:* ${distanceInKm.toFixed(2)} km
+- *Tarifa:* $${totalFare.toFixed(2)}
+- *Origen:* ${document.getElementById('origin').value}
+- *Destino:* ${document.getElementById('destination').value}
+- *Información adicional:* ${additionalInfo}
+    `);
+    console.log("Mensaje codificado:", message); // Depuración
+    const whatsappUrl = `https://wa.me/5493424734353?text=${message}`;
+    document.getElementById('whatsapp-button').setAttribute('href', whatsappUrl);
     event.preventDefault(); // Evita el comportamiento predeterminado del enlace
     window.open(whatsappUrl, '_blank'); // Abre WhatsApp en una nueva pestaña
     // Reproducir sonido de confirmación después de un retraso de 1 segundo
@@ -686,10 +731,14 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
     }, 1000); // 1 segundo de retraso para permitir que WhatsApp se abra antes de reproducir el sonido
 
     // Redirige al nuevo HTML después de un pequeño retraso
+      // Comenta temporalmente esta parte para evitar la redirección y poder ver los logs
+    /*
     setTimeout(() => {
         window.location.href = 'confirmacion.html'; // Cambia por la URL de tu archivo
     }, 4000); // Redirige después de 4 segundos para que el sonido se reproduzca
+    */
 });
+
 
                             
                         })
@@ -722,53 +771,67 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
             let ui = H.ui.UI.createDefault(map, defaultLayers);
         });
     </script>
-	<!-- Contenedor para las FAQ -->
-<section id="faq" style="margin-top: 30px;">
+	
+<section id="faq" style="margin-top: 30px; font-size: 14px;">
+    <script>
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
 
-<script>
-    document.querySelectorAll('.faq-toggle').forEach(button => {
-      button.addEventListener('click', () => {
-        const content = button.nextElementSibling;
+                // Alterna la visibilidad
+                if (content.style.display === 'none' || !content.style.display) {
+                    content.style.display = 'block';
+                } else {
+                    content.style.display = 'none';
+                }
+            });
+        });
 
-        // Alterna la visibilidad
-        if (content.style.display === 'none' || !content.style.display) {
-          content.style.display = 'block';
-        } else {
-          content.style.display = 'none';
+        function toggleModal() {
+            const modal = document.getElementById('faq-modal');
+            modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
         }
-      });
-    });
-	function toggleModal() {
-    const modal = document.getElementById('faq-modal');
-    modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
-}
+    </script>
 
-  </script>
-
-<button class="faq-float-btn" onclick="toggleModal()">¿Preguntas?</button>
-<div id="faq-modal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span class="close" onclick="toggleModal()">&times;</span>
-         <h2>Preguntas Frecuentes</h2>
-    <div>
-    <button class="faq-toggle">¿Que puedo enviar y que no?</button>
-    <p class="faq-content">* No hacemos compras ni trámites a tu nombre.</br>
-* No podemos llevar productos químicos, armas, dinero, joyas o sustancias prohibidas.</br>
-* No podemos llevar paquetes que pesen mas de 10kg.</p>
-  </div>
-  <div>
-    <button class="faq-toggle">¿Cómo sé cuánto costará mi viaje?</button>
-    <p class="faq-content" >Ingresa el origen y el destino en los campos correspondientes. Asegúrate que la dirección elegida sea la que buscas.El precio se calcula automáticamente.</p>
-  </div>
-  <div>
-    <button class="faq-toggle">¿Puedo cancelar un pedido?</button>
-    <p class="faq-content" >Sí, puedes cancelar el pedido. Una vez que solicites catede, podrás cancelarlo directamente desde WhatsApp.</p>
-  </div>
-  <div>
-    <button class="faq-toggle">¿El servicio funciona las 24 horas?</button>
-    <p class="faq-content" >Lunes a Sábados de 8 AM a 20 PM.</p>
-  </div>
+    <button class="faq-float-btn" onclick="toggleModal()">¿Preguntas?</button>
+    <div id="faq-modal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-height: 400px; overflow-y: auto;">
+            <span class="close" onclick="toggleModal()">&times;</span>
+            <h2>Preguntas Frecuentes</h2>
+            <div>
+                <button class="faq-toggle">¿Qué puedo enviar y qué no?</button>
+                <p class="faq-content">* No hacemos compras ni trámites a tu nombre.</br>
+                    * No podemos llevar productos químicos, armas, dinero, joyas o sustancias prohibidas.</br>
+                    * No podemos llevar paquetes que pesen más de 10kg.</p>
+            </div>
+            <div>
+                <button class="faq-toggle">¿Cómo sé cuánto costará mi viaje?</button>
+                <p class="faq-content">Ingresa el origen y el destino en los campos correspondientes. Asegúrate que la dirección elegida sea la que buscas. El precio se calcula automáticamente.</p>
+            </div>
+            <div>
+                <button class="faq-toggle">¿Puedo cancelar un pedido?</button>
+                <p class="faq-content">Sí, puedes cancelar el pedido. Una vez que solicites cadete, podrás cancelarlo directamente desde WhatsApp.</p>
+            </div>
+            <div>
+                <button class="faq-toggle">¿El servicio funciona las 24 horas?</button>
+                <p class="faq-content">Lunes a Sábados de 8 AM a 20 PM.</p>
+            </div>
+            <div>
+                <button class="faq-toggle">¿Hay límites de distancia para enviar?</button>
+                <p class="faq-content">Actualmente nos manejamos con un radio de 8 km máximo para envíos.</p>
+            </div>
+            <div>
+                <button class="faq-toggle">¿Puedo contactarlos si tengo más dudas?</button>
+                <p class="faq-content">
+                    Claro que sí! Email: <a href="mailto:contacto.logisticasf@gmail.com">contacto.logisticasf@gmail.com</a></p>
+                <p>Facebook e Instagram: <a href="https://www.instagram.com/LogisticaSF" target="_blank">@LogisticaSF</a></p>
+                <p>WhatsApp: <a href="https://wa.me/3424734353" target="_blank">3424734353</a></p>
+                </p>
+            </div>
+        </div>
+    </div>
 </section>
+
 
 <!-- Contenedor para los Métodos de Pago -->
 <section id="payment-methods" style="margin-top: 30px;">
