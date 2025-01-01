@@ -9,6 +9,8 @@
     <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <style>
 		body {
     font-family: Arial, sans-serif;
@@ -196,6 +198,17 @@
     color: black;
     text-decoration: none;
   }
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    20%, 60% {
+        transform: scale(1.02); /* Aumento leve */
+    }
+    40%, 80% {
+        transform: scale(1.01); /* Aumento aún más leve */
+    }
+}
   
   button.custom-button {
     padding: 10px 20px;
@@ -203,10 +216,12 @@
     font-weight: bold;
     color: #fff !important;
     background-color: #25d366 !important; /* Color WhatsApp */
-    border: none;
+    border: 2px solid #25d366; /* Contorno sutil */
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    animation: heartbeat 2.5s infinite; /* Aplica la animación */
+
 }
 
 #map {
@@ -357,11 +372,14 @@ input {
 	
     <!-- Botón de WhatsApp, inicialmente oculto -->
     <a id="whatsapp-button" href="" class="whatsapp-button" target="_blank">
-        <button class="custom-button">Pedir Cadete Ahora</button>
+        <button class="custom-button">Pedir Cadete Ahora!</button>
     </a>
 	
-	 <!-- Nuevo botón para Programar Envíos, inicialmente oculto -->
-    <button id="schedule-button" class="time-slot-button" onclick="toggleTimeSlots()" style="display:none;">Programar Envíos</button> 
+	<!-- Nuevo botón para Programar Envíos, con un icono de reloj -->
+<button id="schedule-button" class="time-slot-button" onclick="toggleTimeSlots()" style="display:none;">
+    <i class="fa-solid fa-clock"></i> Programar Envío  
+</button>
+
 	
 	 <!-- Texto debajo del botón "Programar Envíos", inicialmente oculto -->
     <div id="program-info" style="display:none; font-size: 14px; color: #666;">
@@ -448,7 +466,7 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
             document.getElementById('time-slots').style.display = 'none'; // Ocultar las opciones de horarios
             document.getElementById('whatsapp-scheduled-button').style.display = 'inline-block'; // Mostrar el botón de WhatsApp para el horario
 			  // Cambiar el texto del botón "Pedir cadete para ese horario"
-            document.getElementById('scheduled-button-text').textContent = `Programar viaje de ${selectedTimeSlot}`;
+            document.getElementById('scheduled-button-text').textContent = `Enviar cadete de ${selectedTimeSlot}`;
         }
 
 		    // Cargar el sonido de confirmación
@@ -732,11 +750,11 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
 
     // Redirige al nuevo HTML después de un pequeño retraso
       // Comenta temporalmente esta parte para evitar la redirección y poder ver los logs
-    /*
+    
     setTimeout(() => {
         window.location.href = 'confirmacion.html'; // Cambia por la URL de tu archivo
     }, 4000); // Redirige después de 4 segundos para que el sonido se reproduzca
-    */
+    
 });
 
 
