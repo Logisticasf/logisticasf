@@ -860,7 +860,8 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
 </section>
     </div>
 </div>
- if ('serviceWorker' in navigator) {
+<script>
+	 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js')
       .then((registration) => {
@@ -871,7 +872,6 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
       });
   });
 }
-
-
+</script>		 
 </body>
 </html>
