@@ -6,7 +6,7 @@ self.addEventListener('install', (event) => {
       '/logisticasf/index.html',
       '/logisticasf/manifest.json',
       '/logisticasf/android-chrome-192x192.png',
-      '/logisticasf/android-chrome-192x192.png',
+      '/logisticasf/android-chrome-512x512.png',
       ]);
     })
   );
