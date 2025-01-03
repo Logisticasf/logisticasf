@@ -5,6 +5,7 @@
   "start_url": "/logisticasf/index.html",
   "display": "standalone",
   "background_color": "#e7e4e4",
+  "scope": "/logisticasf/",
   "theme_color": "#198ff3",
 "icons": [
   {
