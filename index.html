@@ -9,8 +9,8 @@
     <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="manifest" href="https://logisticasf.github.io/logisticasf/manifest.json">		
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	
 
     <style>
 		body {
@@ -23,7 +23,7 @@
     flex-direction: column; /* Mantén los elementos en una columna */
     align-items: center; /* Centra horizontalmente */
     justify-content: center; /* Centra verticalmente */
-    height: 100vh; /* Usa toda la altura de la pantalla */
+    height: 90vh; /* Usa toda la altura de la pantalla */
 }
         h1 {
             margin: 20px 0;
@@ -374,13 +374,13 @@ input {
 	
 	<!-- Nuevo botón para Programar Envíos, con un icono de reloj -->
 <button id="schedule-button" class="time-slot-button" onclick="toggleTimeSlots()" style="display:none;">
-    <i class="fa-solid fa-clock"></i> Programar Envío  
+    <i class="fa-solid fa-clock"></i> Programar un Envío  
 </button>
 
 	
 	 <!-- Texto debajo del botón "Programar Envíos", inicialmente oculto -->
-    <div id="program-info" style="display:none; font-size: 14px; color: #666;">
-        <b>*Al programar un envío sólo abona la Tarifa Base.</b>
+    <div id="program-info" style="display:none; font-size: 14px; color: #666; margin-top: 10px; text-align: center;">
+        <b>*Programa tu envío con anticipación y paga únicamente la Tarifa Base</b>
     </div>
 
     <!-- Opciones de horarios para programar -->
@@ -453,9 +453,20 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 
 
         function toggleTimeSlots() {
-            const timeSlotDiv = document.getElementById('time-slots');
-            timeSlotDiv.style.display = (timeSlotDiv.style.display === 'none' || timeSlotDiv.style.display === '') ? 'block' : 'none';
-        }
+    const timeSlotDiv = document.getElementById('time-slots'); // Div de horarios
+    const programInfo = document.getElementById('program-info'); // Texto informativo
+
+    if (timeSlotDiv.style.display === 'none' || timeSlotDiv.style.display === '') {
+        // Mostrar horarios y ocultar texto
+        timeSlotDiv.style.display = 'block';
+        programInfo.style.display = 'none';
+    } else {
+        // Ocultar horarios y mostrar texto
+        timeSlotDiv.style.display = 'none';
+        programInfo.style.display = 'inline-block';
+    }
+}
+
 
         function selectTimeSlot(timeSlot) {
             selectedTimeSlot = timeSlot;
@@ -721,14 +732,18 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 document.getElementById('whatsapp-button').addEventListener('click', (event) => {
     const additionalInfo = document.getElementById('additional-info').value;
     console.log("Valor adicional capturado en clic:", additionalInfo); // Verifica que el valor se capture correctamente
-    const message = encodeURIComponent(`
+    let message = `
 *Detalles del envío:*
 - *Distancia:* ${distanceInKm.toFixed(2)} km
 - *Tarifa:* $${totalFare.toFixed(2)}
 - *Origen:* ${document.getElementById('origin').value}
-- *Destino:* ${document.getElementById('destination').value}
-- *Información adicional:* ${additionalInfo}
-    `);
+- *Destino:* ${document.getElementById('destination').value}`;
+
+// Agregar "Información adicional" solo si el campo no está vacío
+if (additionalInfo) {
+    message += `
+- *Información adicional:* ${additionalInfo}`;
+}
     console.log("Mensaje codificado:", message); // Depuración
     const whatsappUrl = `https://wa.me/5493424734353?text=${message}`;
     document.getElementById('whatsapp-button').setAttribute('href', whatsappUrl);
@@ -860,50 +875,7 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
 </section>
     </div>
 </div>
-<script>	
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('https://logisticasf.github.io/logisticasf/service-worker.js')
-      .then((registration) => {
-        console.log('Service Worker registrado con éxito:', registration);
-      })
-      .catch((error) => {
-        console.log('Error al registrar el Service Worker:', error);
-      });
-  });
-}
-</script>	
-<script>
-	let deferredPrompt;
+ 
 
-window.addEventListener('beforeinstallprompt', (e) => {
-console.log('beforeinstallprompt fired');
-// Evitar que el navegador muestre automáticamente el prompt
-  e.preventDefault();
-  // Guardar el evento para usarlo más tarde
-  deferredPrompt = e;
-
-  // Mostrar el botón de instalación
-  const installButton = document.getElementById('install-button');
-  installButton.style.display = 'block';
-
-  // Manejar el clic del usuario en el botón
-  installButton.addEventListener('click', () => {
-    // Mostrar el prompt de instalación
-    deferredPrompt.prompt();
-    // Esperar la respuesta del usuario
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('Usuario aceptó el prompt de A2HS');
-      } else {
-        console.log('Usuario rechazó el prompt de A2HS');
-      }
-      deferredPrompt = null;
-    });
-  });
-});
-
-</script>	
-<button id="install-button" style="display: none;">Añadir a la pantalla de inicio</button>	 
 </body>
 </html>
