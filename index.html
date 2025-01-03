@@ -861,9 +861,9 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
     </div>
 </div>
 <script>
-	 if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
+    navigator.serviceWorker.register('https://logisticasf.github.io/service-worker.js')
       .then((registration) => {
         console.log('Service Worker registrado con éxito:', registration);
       })
@@ -872,6 +872,7 @@ document.getElementById('whatsapp-button').addEventListener('click', (event) => 
       });
   });
 }
+
 </script>		 
 </body>
 </html>
