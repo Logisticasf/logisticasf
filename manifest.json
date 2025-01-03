@@ -3,6 +3,7 @@
   "short_name": "LogisticaSF",
   "description": "Servicio de envíos puerta a puerta",
   "start_url": "/",
+  "id": "/",
   "display": "standalone",
   "background_color": "#e7e4e4",
   "theme_color": "#198ff3",
