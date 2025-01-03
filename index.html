@@ -543,7 +543,7 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 
     <script>
         let platform = new H.service.Platform({
-            apikey: '2XxPJwh913nXhT83TPnlq100Sp8_FxF4ZmGT8p-xlsM'
+            apikey: 'A8_ouFDT0FPNDwJWgC2OTrnlI0_HWW_-_IMV-TKm9sM'
         });
         let originCoordinates = null;
         let destinationCoordinates = null;
@@ -626,7 +626,7 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 				}
 
 				const baseUrl = 'https://router.hereapi.com/v8/routes';
-				const url = `${baseUrl}?apikey=2XxPJwh913nXhT83TPnlq100Sp8_FxF4ZmGT8p-xlsM&transportMode=car&origin=${originCoordinates.lat},${originCoordinates.lng}&destination=${destinationCoordinates.lat},${destinationCoordinates.lng}&return=polyline,summary`;
+				const url = `${baseUrl}?apikey=A8_ouFDT0FPNDwJWgC2OTrnlI0_HWW_-_IMV-TKm9sM&transportMode=car&origin=${originCoordinates.lat},${originCoordinates.lng}&destination=${destinationCoordinates.lat},${destinationCoordinates.lng}&return=polyline,summary`;
 
 				fetch(url)
 					.then(response => {
@@ -660,7 +660,7 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
         return; // Sal del flujo para evitar ejecutar el resto del código
     }
 
-						const userDistanceUrl = `${baseUrl}?apikey=2XxPJwh913nXhT83TPnlq100Sp8_FxF4ZmGT8p-xlsM&transportMode=car&origin=${userCoordinates.lat},${userCoordinates.lng}&destination=${originCoordinates.lat},${originCoordinates.lng}&return=summary`;
+						const userDistanceUrl = `${baseUrl}?apikey=A8_ouFDT0FPNDwJWgC2OTrnlI0_HWW_-_IMV-TKm9sM&transportMode=car&origin=${userCoordinates.lat},${userCoordinates.lng}&destination=${originCoordinates.lat},${originCoordinates.lng}&return=summary`;
 
 						fetch(userDistanceUrl)
 							.then(userResponse => {
