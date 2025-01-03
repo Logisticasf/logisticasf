@@ -481,15 +481,16 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
     const successSound = new Audio("success.mp3");
         // Función para generar el mensaje de WhatsApp con la hora seleccionada
         document.getElementById('whatsapp-scheduled-button').onclick = function() {
-    const origin = document.getElementById('origin').value.toUpperCase();
-    const destination = document.getElementById('destination').value.toUpperCase();
-      // Verifica si el origen o el destino contienen "SANTO TOMÉ"
-    if (origin.includes("SANTO TOMÉ") || destination.includes("SANTO TOMÉ")) {
+    const origin = document.getElementById('origin').value);
+    const destination = document.getElementById('destination').value;
+     // Verifica si el origen o el destino contienen "Santo Tomé"
+    if (origin.includes("Santo Tomé") || destination.includes("Santo Tomé")) {
         const resultDiv = document.getElementById('result');
-        resultDiv.textContent = "Lo sentimos, no podemos realizar ese viaje.";
+        resultDiv.textContent = "Lo sentimos, no podemos realizar ese viaje a santo.";
         resultDiv.style.color = "red"; // Cambia el color del mensaje si es necesario
         return; // Detén el flujo aquí
-    }		
+    }
+
         const additionalInfo = document.getElementById('additional-info').value;
 
     if (origin && destination && selectedTimeSlot) {
