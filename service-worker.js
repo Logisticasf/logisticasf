@@ -19,8 +19,3 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
-self.addEventListener('activate', (event) => {
-  console.log('Service Worker activado');
-  event.waitUntil(clients.claim());  // Asegura que el Service Worker tome el control
-});
-
