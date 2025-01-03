@@ -877,7 +877,8 @@ if ('serviceWorker' in navigator) {
 	let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
-  // Evitar que el navegador muestre automáticamente el prompt
+console.log('beforeinstallprompt fired');
+// Evitar que el navegador muestre automáticamente el prompt
   e.preventDefault();
   // Guardar el evento para usarlo más tarde
   deferredPrompt = e;
