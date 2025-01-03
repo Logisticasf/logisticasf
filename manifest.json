@@ -1,11 +1,12 @@
 {
   "name": "LogisticaSF",
-  "theme_color": "#198ff3",
-  "background_color": "#e7e4e4",
   "short_name": "LogisticaSF",
-  "id": "LogisticaSF",
-  "description": "Servicio de envíos puerta a puerta"
- "icons": [
+  "description": "Servicio de envíos puerta a puerta",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#e7e4e4",
+  "theme_color": "#198ff3",
+  "icons": [
     {
       "src": "/logisticasf/android-chrome-192x192.png",
       "sizes": "192x192",
