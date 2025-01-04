@@ -875,6 +875,22 @@ if (additionalInfo) {
         </div>
     </div>
 </section>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/logisticasf/service-worker.js') // Ruta relativa desde el dominio raíz
+        .then(registration => {
+          console.log('Service Worker registrado con éxito:', registration);
+        })
+        .catch(error => {
+          console.error('Error al registrar el Service Worker:', error);
+        });
+    });
+  } else {
+    console.log('Service Workers no son soportados en este navegador.');
+  }
+</script>
 
 </body>
 </html>
