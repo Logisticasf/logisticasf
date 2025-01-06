@@ -488,10 +488,12 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
     if (origin && destination && selectedTimeSlot) {
         let message = `*Envío Programado:*\n*Origen:* ${origin}\n*Destino:* ${destination}\n*Horario:* De ${selectedTimeSlot}.`;
 		
-           // Define la tarifa base según la distancia calculada
+              // Define la tarifa base según la distancia calculada
         let baseFare = null;
-        if (calculatedDistance < 3) {
-            baseFare = 1500;
+        if (calculatedDistance < 1.7) {
+			baseFare = 1000;
+		} else if (calculatedDistance >= 1.7 && calculatedDistance < 3) {
+			baseFare = 1500;
         } else if (calculatedDistance >= 3 && calculatedDistance < 5) {
             baseFare = 2000;
         } else if (calculatedDistance >= 5 && calculatedDistance < 8) {
@@ -647,7 +649,9 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 						
 						
 						let baseFare = null;
-						if (distanceInKm < 3) {
+						if (calculatedDistance < 1.7) {
+							baseFare = 1000;
+						} else if (calculatedDistance >= 1.7 && calculatedDistance < 3) {
 							baseFare = 1500;
 						} else if (distanceInKm >= 3 && distanceInKm < 5) {
 							baseFare = 2000;
