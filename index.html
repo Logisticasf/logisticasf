@@ -318,6 +318,19 @@ input {
     box-sizing: border-box; /* Para que el padding no afecte el tamaño total */
 }
 
+/* Estilos para el icono de la flecha */
+/* Estilos para el icono de la flecha */
+#arrow {
+    text-align: center;
+    margin-top: 10px;
+}
+
+#arrow i {
+    font-size: 24px; /* Tamaño del icono de la flecha */
+    color: #007bff;  /* Color de la flecha */
+    display: inline-block;
+    transform: rotate(0deg); /* Deja la flecha hacia abajo */
+}
     </style>
 	</head>
 	
@@ -373,15 +386,20 @@ input {
 </a>
 	
 	<!-- Nuevo botón para Programar Envíos, con un icono de reloj -->
-<button id="schedule-button" class="time-slot-button" onclick="toggleTimeSlots()" style="display:none;">
+<button id="schedule-button" class="time-slot-button" title="Sólo pagas la tarifa base!"onclick="toggleTimeSlots()" style="display:none;">
     <i class="fa-solid fa-clock"></i> Programar un Envío  
 </button>
 
+<!-- Flecha hacia abajo usando el icono de Font Awesome -->
+<div id="arrow" class="arrow" style="display:none;">
+    <i class="fa-sharp-duotone fa-solid fa-circle-arrow-down"></i> <!-- Flecha hacia abajo -->
+</div>
 	
-	 <!-- Texto debajo del botón "Programar Envíos", inicialmente oculto -->
-    <div id="program-info" style="display:none; font-size: 14px; color: #666; margin-top: 10px; text-align: center;">
-        <b>*Programa tu envío con anticipación y paga únicamente la Tarifa Base</b>
-    </div>
+	<!-- Texto debajo del botón "Programar Envíos", inicialmente oculto -->
+<div id="program-info" style="display:none; font-size: 14px; color: #151517; margin-top: 10px; text-align: center;">
+    <b>*Si programas un envío solo pagás la tarifa base</b>
+</div>
+
 
     <!-- Opciones de horarios para programar -->
     <div id="time-slots" class="time-slot">
@@ -649,20 +667,26 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
 						
 						
 						let baseFare = null;
-						if (calculatedDistance < 1.7) {
-							baseFare = 1000;
-						} else if (calculatedDistance >= 1.7 && calculatedDistance < 3) {
-							baseFare = 1500;
-						} else if (distanceInKm >= 3 && distanceInKm < 5) {
-							baseFare = 2000;
-						} else if (distanceInKm >= 5 && distanceInKm < 8) {
-							baseFare = 2500;
-						} else if (calculatedDistance >= 8) {
-        // Maneja el caso de distancias superiores a 8 km
-        message = "Lo sentimos, no podemos realizar ese viaje.";
-        alert(message);
-        return; // Sal del flujo para evitar ejecutar el resto del código
-    }
+						let message = ''; // Asegúrate de tener esta variable para manejar mensajes
+
+// Usa `distanceInKm` en todas las comparaciones para mantener la consistencia
+if (distanceInKm < 1.7) {
+    baseFare = 1000;
+} else if (distanceInKm >= 1.7 && distanceInKm < 3) {
+    baseFare = 1500;
+} else if (distanceInKm >= 3 && distanceInKm < 5) {
+    baseFare = 2000;
+} else if (distanceInKm >= 5 && distanceInKm < 8) {
+    baseFare = 2500;
+} else if (distanceInKm >= 8) {
+    // Maneja el caso de distancias superiores a 8 km
+    message = "Lo sentimos, no podemos realizar ese viaje.";
+    alert(message);
+    return; // Sal del flujo para evitar ejecutar el resto del código
+}
+
+// Asegúrate de usar `baseFare` después de este bloque
+console.log(`La tarifa base es: ${baseFare}`);
 
 						const userDistanceUrl = `${baseUrl}?apikey=A8_ouFDT0FPNDwJWgC2OTrnlI0_HWW_-_IMV-TKm9sM&transportMode=car&origin=${userCoordinates.lat},${userCoordinates.lng}&destination=${originCoordinates.lat},${originCoordinates.lng}&return=summary`;
 
@@ -730,6 +754,8 @@ document.addEventListener("DOMContentLoaded", updateTimeSlots);
                             document.getElementById('whatsapp-button').style.display = 'inline-block';
 							document.getElementById('schedule-button').style.display = 'inline-block';
 							document.getElementById('program-info').style.display = 'inline-block'; // Mostrar el texto debajo del botón
+							document.getElementById('arrow').style.display = 'inline-block'; // Mostrar la flecha
+
 							
 							
 							// Escucha el clic en el botón de WhatsApp
