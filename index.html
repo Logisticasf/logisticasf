@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogísticaSF</title>
-    <meta name="description" content="Servicio de envíos puerta a puerta en Santa Fe"> 		
+    <title>Logística SF</title>
+	<meta name="description" content="Servicio de envíos puerta a puerta en Santa Fe"> 	
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
@@ -337,7 +337,7 @@ input {
 	
 <body>
     <h1>
-        <img alt="Servicios de Envío en Santa Fe" src="https://i.ibb.co/g9PWfqG/logo-logistica.png" style="width: 300px; height: auto;"><br>
+        <img alt="" src="https://i.ibb.co/g9PWfqG/logo-logistica.png" style="width: 300px; height: auto;"><br>
     </h1>
 <div class="main-container">	
  <div class="route-container">
@@ -402,15 +402,21 @@ input {
 </div>
 
 
-    <!-- Opciones de horarios para programar -->
-    <div id="time-slots" class="time-slot">
-        <button class="time-slot-button" onclick="selectTimeSlot('8:00 a 10:00')">Enviar entre las 8:00 a 10:00</button>
-        <button class="time-slot-button" onclick="selectTimeSlot('10:00 a 12:00')">Enviar entre las 10:00 a 12:00</button>
-        <button class="time-slot-button" onclick="selectTimeSlot('12:00 a 14:00')">Enviar entre las 12:00 a 14:00</button>
-        <button class="time-slot-button" onclick="selectTimeSlot('14:00 a 16:00')">Enviar entre las 14:00 a 16:00</button>
-        <button class="time-slot-button" onclick="selectTimeSlot('16:00 a 18:00')">Enviar entre las 16:00 a 18:00</button>
-        <button class="time-slot-button" onclick="selectTimeSlot('18:00 a 20:00')">Enviar entre las 18:00 a 20:00</button>
-    </div>
+     <!-- Opciones de horarios para programar -->
+<div id="time-slots" class="time-slot">
+    <button class="time-slot-button" onclick="selectTimeSlot('8:00 a 9:00')">Enviar entre las 8:00 a 9:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('9:00 a 10:00')">Enviar entre las 9:00 a 10:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('10:00 a 11:00')">Enviar entre las 10:00 a 11:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('11:00 a 12:00')">Enviar entre las 11:00 a 12:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('12:00 a 13:00')">Enviar entre las 12:00 a 13:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('13:00 a 14:00')">Enviar entre las 13:00 a 14:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('14:00 a 15:00')">Enviar entre las 14:00 a 15:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('15:00 a 16:00')">Enviar entre las 15:00 a 16:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('16:00 a 17:00')">Enviar entre las 16:00 a 17:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('17:00 a 18:00')">Enviar entre las 17:00 a 18:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('18:00 a 19:00')">Enviar entre las 18:00 a 19:00</button>
+    <button class="time-slot-button" onclick="selectTimeSlot('19:00 a 20:00')">Enviar entre las 19:00 a 20:00</button>
+</div>
 
 <script>
    // Actualizar los horarios
@@ -422,12 +428,18 @@ function updateTimeSlots() {
 
     // Lista de horarios con su rango en minutos
     const timeRanges = [
-        { range: "8:00 a 10:00", start: 8 * 60, end: 10 * 60 },
-        { range: "10:00 a 12:00", start: 10 * 60, end: 12 * 60 },
-        { range: "12:00 a 14:00", start: 12 * 60, end: 14 * 60 },
-        { range: "14:00 a 16:00", start: 14 * 60, end: 16 * 60 },
-        { range: "16:00 a 18:00", start: 16 * 60, end: 18 * 60 },
-        { range: "18:00 a 20:00", start: 18 * 60, end: 20 * 60 },
+        { range: "8:00 a 9:00", start: 8 * 60, end: 9 * 60 },
+        { range: "9:00 a 10:00", start: 9 * 60, end: 10 * 60 },
+        { range: "10:00 a 11:00", start: 10 * 60, end: 11 * 60 },
+        { range: "11:00 a 12:00", start: 11 * 60, end: 12 * 60 },
+        { range: "12:00 a 13:00", start: 12 * 60, end: 13 * 60 },
+        { range: "13:00 a 14:00", start: 13 * 60, end: 14 * 60 },
+        { range: "14:00 a 15:00", start: 14 * 60, end: 15 * 60 },
+        { range: "15:00 a 16:00", start: 15 * 60, end: 16 * 60 },
+        { range: "16:00 a 17:00", start: 16 * 60, end: 17 * 60 },
+        { range: "17:00 a 18:00", start: 17 * 60, end: 18 * 60 },
+        { range: "18:00 a 19:00", start: 18 * 60, end: 19 * 60 },
+        { range: "19:00 a 20:00", start: 19 * 60, end: 20 * 60 },
     ];
 
     // Seleccionar los botones dentro de #time-slots
@@ -899,7 +911,7 @@ if (additionalInfo) {
                 <button class="faq-toggle">¿Puedo contactarlos si tengo más dudas?</button>
                 <p class="faq-content">
                     Claro que sí! Email: <a href="mailto:contacto.logisticasf@gmail.com">contacto.logisticasf@gmail.com</a></p>
-                <p>Facebook e Instagram: <a href="https://www.instagram.com/logistica_sf" target="_blank">@Logistica_SF</a></p>
+                <p>Facebook e Instagram: <a href="https://www.instagram.com/Logistica_sf" target="_blank">@Logistica_SF</a></p>
                 <p>WhatsApp: <a href="https://wa.me/3424638698" target="_blank">3424638698</a></p>
                 </p>
             </div>
