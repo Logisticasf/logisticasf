@@ -73,7 +73,7 @@
   </style>
 </head>
 <body>
-  <div style="max-width: 400px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 0 10px 5px 10px;">
+  <div style="max-width: 400px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 0 5px 5px 5px;">
   <h1 style="margin: 0; font-size: 26px;">Nuevo Envío</h1>
   <img src="https://raw.githubusercontent.com/Logisticasf/logisticasf/refs/heads/main/ic_launcher-Recovered2.png" alt="Logo Logística" style="max-height: 80px;">
 </div>
@@ -244,7 +244,7 @@
       totalTarifa += precioActual;
 
       alert(`✅ Pedido agregado.\n\nCantidad de envíos confirmados: ${pedidosConfirmados}\nTarifa total acumulada: $${totalTarifa}`);
-      resumenDiv.textContent = `Cantidad de envíos confirmados: ${pedidosConfirmados} | Tarifa total: $${totalTarifa}`;
+      resumenDiv.textContent = `Envíos confirmados: ${pedidosConfirmados} | Tarifa total: $${totalTarifa}`;
 
       btnConfirmar.disabled = true;
       btnConfirmar.textContent = '✔ Pedido confirmado';
