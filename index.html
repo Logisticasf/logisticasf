@@ -70,13 +70,20 @@
       color: #155724;
       text-align: center;
     }
+    .descuento-aplicado {
+      color: #d63384;
+      font-weight: bold;
+    }
+    .tachado {
+      text-decoration: line-through;
+    }
   </style>
 </head>
 <body>
-  <div style="max-width: 400px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 0 5px 5px 5px;">
-  <h1 style="margin: 0; font-size: 26px;">Nuevo Envío</h1>
-  <img src="https://raw.githubusercontent.com/Logisticasf/logisticasf/refs/heads/main/ic_launcher-Recovered2.png" alt="Logo Logística" style="max-height: 80px;">
-</div>
+	<div style="max-width: 400px; margin: auto; display: flex; align-items: center; justify-content: space-between; padding: 0 5px 5px 5px;">
+	  <h1 style="margin: 0; font-size: 26px;">Nuevo Envío</h1>
+	  <img src="https://raw.githubusercontent.com/Logisticasf/logisticasf/refs/heads/main/ic_launcher-Recovered2.png" alt="Logo Logística" style="max-height: 80px;">
+	</div>
 
   <form id="formulario">
     <input type="text" id="cliente" placeholder="Nombre del cliente" required />
@@ -131,6 +138,30 @@
     let precioActual = null;
     let pedidosConfirmados = 0;
     let totalTarifa = 0;
+    let totalConDescuento = 0;
+    let descuentoAplicado = 0;
+
+    // Función para calcular descuento (con redondeo de porcentaje)
+    function calcularDescuento(cantidadPedidos, total) {
+      let descuento = 0;
+      
+      if (cantidadPedidos >= 2 && cantidadPedidos <= 3) {
+        descuento = 0.07; // 7%
+      } else if (cantidadPedidos >= 4 && cantidadPedidos <= 5) {
+        descuento = 0.15; // 15%
+      } else if (cantidadPedidos > 5) {
+        descuento = 0.20; // 20%
+      }
+      
+      // Redondear el porcentaje para evitar decimales raros
+      const porcentajeRedondeado = Math.round(descuento * 100);
+      
+      return {
+        porcentaje: porcentajeRedondeado, // Ahora será 7, 15 o 20 exactos
+        monto: total * descuento,
+        totalConDescuento: total * (1 - descuento)
+      };
+    }
 
     // Autocompletado
     let timeout;
@@ -203,10 +234,13 @@
         distanciaDiv.textContent = `Distancia: ${distanceKm.toFixed(2)} km`;
 
         let precio;
-        if (distanceKm < 1.7) precio = 1000;
+        if (distanceKm < 1.5) precio = 1000;
         else if (distanceKm < 3) precio = 1500;
+        else if (distanceKm < 4) precio = 1700;
         else if (distanceKm < 5) precio = 2000;
-        else if (distanceKm < 8) precio = 2500;
+        else if (distanceKm < 6) precio = 2400;
+        else if (distanceKm < 7) precio = 2700;
+        else if (distanceKm < 8.5) precio = 3000;
         else {
           precioDiv.textContent = '';
           rechazoDiv.textContent = 'Lo sentimos, no realizamos envíos a esa distancia.';
@@ -243,8 +277,32 @@
       pedidosConfirmados++;
       totalTarifa += precioActual;
 
-      alert(`✅ Pedido agregado.\n\nCantidad de envíos confirmados: ${pedidosConfirmados}\nTarifa total acumulada: $${totalTarifa}`);
-      resumenDiv.textContent = `Envíos confirmados: ${pedidosConfirmados} | Tarifa total: $${totalTarifa}`;
+      // Calcular descuento
+      const descuento = calcularDescuento(pedidosConfirmados, totalTarifa);
+      descuentoAplicado = descuento.monto;
+      totalConDescuento = descuento.totalConDescuento;
+
+      // Mostrar alert con la información
+      let mensajeAlerta = `✅ Pedido agregado.\n\nCantidad de envíos confirmados: ${pedidosConfirmados}\nTarifa total acumulada: $${totalTarifa.toFixed(2)}`;
+      
+      if (pedidosConfirmados >= 2) {
+        mensajeAlerta += `\n\nDescuento aplicado: ${descuento.porcentaje}%`;
+        mensajeAlerta += `\nTotal con descuento: $${totalConDescuento.toFixed(2)}`;
+        mensajeAlerta += `\nAhorro: $${descuentoAplicado.toFixed(2)}`;
+      }
+
+      alert(mensajeAlerta);
+      
+      // Actualizar resumen
+      if (pedidosConfirmados < 2) {
+        resumenDiv.textContent = `Envíos confirmados: ${pedidosConfirmados} | Tarifa total: $${totalTarifa.toFixed(2)}`;
+      } else {
+        resumenDiv.innerHTML = `
+          Envíos confirmados: ${pedidosConfirmados} | 
+          Tarifa base: <span class="tachado">$${totalTarifa.toFixed(2)}</span> | 
+          Total con descuento: <span class="descuento-aplicado">$${totalConDescuento.toFixed(2)}</span>
+        `;
+      }
 
       btnConfirmar.disabled = true;
       btnConfirmar.textContent = '✔ Pedido confirmado';
@@ -285,12 +343,26 @@
         mensaje += `💵 Precio: $${p.precio}\n\n`;
       });
 
+      // Agregar resumen con descuento si aplica
+      if (pedidosConfirmados >= 2) {
+        const descuento = calcularDescuento(pedidosConfirmados, totalTarifa);
+        mensaje += `\n💰 *Resumen de pago:*\n`;
+        mensaje += `Total sin descuento: $${totalTarifa.toFixed(2)}\n`;
+        mensaje += `Descuento (${descuento.porcentaje}%): -$${descuento.monto.toFixed(2)}\n`;
+        mensaje += `*Total a pagar: $${descuento.totalConDescuento.toFixed(2)}*`;
+      } else {
+        mensaje += `\n💰 *Total a pagar: $${totalTarifa.toFixed(2)}*`;
+      }
+
       const url = `https://wa.me/5493424638698?text=${encodeURIComponent(mensaje)}`;
       window.open(url, '_blank');
 
+      // Reiniciar todo
       pedidos = [];
       pedidosConfirmados = 0;
       totalTarifa = 0;
+      totalConDescuento = 0;
+      descuentoAplicado = 0;
       resumenDiv.textContent = '';
       document.getElementById('formulario').reset();
       botones.style.display = 'none';
@@ -298,12 +370,9 @@
       distanciaDiv.textContent = '';
       rechazoDiv.textContent = '';
       btnConfirmar.disabled = false;
-	  btnConfirmar.textContent = 'Confirmar pedido';
-	  btnConfirmar.style.backgroundColor = 'green';	
-	  btnConfirmar.style.cursor = 'pointer';
-
-	  
-
+      btnConfirmar.textContent = 'Confirmar pedido';
+      btnConfirmar.style.backgroundColor = 'green';
+      btnConfirmar.style.cursor = 'pointer';
     });
   </script>
 </body>
