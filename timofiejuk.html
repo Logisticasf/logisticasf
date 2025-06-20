@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Nuevo Envío | Logística SF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00a859;
+      --primary-dark: #008548;
+      --secondary: #ff6b00;
+      --dark: #2d3436;
+      --light-gray: #f5f6fa;
+      --gray: #dfe6e9;
+      --dark-gray: #636e72;
+      --danger: #d63031;
+      --warning: #fdcb6e;
+      --success: #00b894;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.12);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+       background-color: #b7f7a5;
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      
+    }
+    
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--dark);
+      margin: 0;
+    }
+    
+    .logo {
+      height: 100px;
+      width: auto;
+    }
+    
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 25px;
+      margin-bottom: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--dark);
+      margin-bottom: 20px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .card-title:after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 3px;
+      background: var(--primary);
+      margin: 10px auto 0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--dark-gray);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 14px;
+      border: 1px solid var(--gray);
+      border-radius: var(--radius-sm);
+      transition: border 0.3s;
+      font-family: 'Roboto', sans-serif;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 168, 89, 0.2);
+    }
+    
+    textarea.form-control {
+      min-height: 60px;
+      resize: vertical;
+    }
+    
+    .btn {
+	  background-color: #ee9af5;
+      display: inline-block;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #194df0;
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    .btn-disabled {
+      background-color: var(--gray);
+      color: var(--dark-gray);
+      cursor: not-allowed;
+    }
+    
+    .info-box {
+      padding: 15px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+    
+    .info-success {
+      background-color: #23d195;
+      border-left: 4px solid var(--success);
+      color: #f7fffd;
+    }
+    
+    .info-danger {
+      background-color: rgba(214, 48, 49, 0.1);
+      border-left: 4px solid var(--danger);
+      color: var(--danger);
+    }
+    
+    .info-warning {
+      background-color: rgba(253, 203, 110, 0.2);
+      border-left: 4px solid var(--warning);
+      color: #b8860b;
+    }
+    
+    .price {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fbff05;
+    }
+    
+    .distance {
+      font-size: 16px;
+      color: var(--dark-gray);
+    }
+    
+    .strikethrough {
+      text-decoration: line-through;
+      color: var(--dark-gray);
+    }
+    
+    .discount {
+      color: var(--secondary);
+      font-weight: 700;
+    }
+    
+    .summary {
+      background-color: white;
+      padding: 15px;
+      border-radius: var(--radius-sm);
+      margin-top: 20px;
+      font-size: 15px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .direccion-wrapper {
+      position: relative;
+    }
+    
+    .sugerencias {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      border: 1px solid var(--gray);
+      background: white;
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .sugerencias div {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .sugerencias div:hover {
+      background-color: var(--light-gray);
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0, 168, 89, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .pharmacy-badge {
+      display: inline-block;
+      background-color: #f0f8ff;
+      color: #4682b4;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      border: 1px solid #add8e6;
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+     
+    </div>
+    
+    <div class="pharmacy-badge">Farmacia Timofiejuk</div>
+    
+    <div class="card">
+          
+      <form id="formulario">
+        <div class="form-group">
+          <label for="cliente" class="form-label">Nombre del cliente</label>
+          <input type="text" id="cliente" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="direccion" class="form-label">Dirección de entrega</label>
+          <div class="direccion-wrapper">
+            <input type="text" id="direccion" class="form-control" required autocomplete="off">
+            <div id="sugerencias" class="sugerencias"></div>
+          </div>
+          <input type="hidden" id="latitud">
+          <input type="hidden" id="longitud">
+        </div>
+        
+        <div class="form-group">
+          <label for="detalle" class="form-label">Observaciones (opcional)</label>
+          <textarea id="detalle" class="form-control" ></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="telefono" class="form-label">Teléfono del cliente (opcional)</label>
+          <input type="tel" id="telefono" class="form-control" >
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Calcular envío</button>
+      </form>
+    </div>
+    
+    <div id="distancia" class="distance hidden"></div>
+    <div id="precio" class="info-box hidden"></div>
+    <div id="rechazo" class="info-box hidden"></div>
+    <div id="resumen" class="summary hidden"></div>
+    <div id="carga-ruta" class="info-warning info-box hidden">
+      <span class="loading"></span>Optimizando ruta de entrega...
+    </div>
+    
+    <div id="botones" class="button-group hidden">
+      <button id="confirmar" class="btn btn-primary">Confirmar pedido</button>
+      <button id="nuevo" class="btn">Agregar otro pedido</button>
+      <button id="enviar" class="btn btn-secondary">Enviar todos por WhatsApp</button>
+    </div>
+  </div>
+
+  <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+  <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+
+  <script>
+    const platform = new H.service.Platform({
+      apikey: 'A8_ouFDT0FPNDwJWgC2OTrnlI0_HWW_-_IMV-TKm9sM'
+    });
+
+    const service = platform.getSearchService();
+    const router = platform.getRoutingService(null, 8);
+
+    const direccionInput = document.getElementById('direccion');
+    const latInput = document.getElementById('latitud');
+    const lngInput = document.getElementById('longitud');
+    const precioDiv = document.getElementById('precio');
+    const rechazoDiv = document.getElementById('rechazo');
+    const distanciaDiv = document.getElementById('distancia');
+    const sugerencias = document.getElementById('sugerencias');
+    const botones = document.getElementById('botones');
+    const btnConfirmar = document.getElementById('confirmar');
+    const btnNuevo = document.getElementById('nuevo');
+    const btnEnviar = document.getElementById('enviar');
+    const resumenDiv = document.getElementById('resumen');
+    const cargaRutaDiv = document.getElementById('carga-ruta');
+
+    let pedidos = [];
+    let distanciaActual = null;
+    let precioActual = null;
+    let pedidosConfirmados = 0;
+    let totalTarifa = 0;
+    let totalConDescuento = 0;
+    let descuentoAplicado = 0;
+
+    // Coordenadas de la farmacia
+    const farmaciaLat = -31.647575240386356;
+    const farmaciaLng = -60.7053936347546;
+
+    // Función para calcular distancia haversine (en línea recta)
+    function distanciaHaversine(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radio de la Tierra en km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c; // Distancia en km
+    }
+
+    // Función para calcular tiempo estimado usando haversine
+    function calcularTiempoEstimado(pedidos) {
+      if (pedidos.length === 0) return '';
+      
+      const velocidadPromedio = 30; // km/h en moto
+      const tiempoPorEntrega = 5; // minutos por entrega
+      const pedidosOrdenados = ordenarPorDistancia(pedidos);
+      
+      let distanciaTotal = 0;
+      
+      // Distancia de farmacia al primer pedido
+      if (pedidosOrdenados.length > 0) {
+        distanciaTotal += distanciaHaversine(
+          farmaciaLat,
+          farmaciaLng,
+          parseFloat(pedidosOrdenados[0].lat),
+          parseFloat(pedidosOrdenados[0].lng)
+        );
+      }
+      
+      // Distancias entre pedidos consecutivos
+      for (let i = 1; i < pedidosOrdenados.length; i++) {
+        distanciaTotal += distanciaHaversine(
+          parseFloat(pedidosOrdenados[i-1].lat),
+          parseFloat(pedidosOrdenados[i-1].lng),
+          parseFloat(pedidosOrdenados[i].lat),
+          parseFloat(pedidosOrdenados[i].lng)
+        );
+      }
+      
+      // Calcular tiempo total
+      const tiempoViaje = (distanciaTotal / velocidadPromedio) * 60; // minutos
+      const tiempoTotal = tiempoViaje + (pedidosOrdenados.length * tiempoPorEntrega);
+      
+      const horas = Math.floor(tiempoTotal / 60);
+      const minutos = Math.round(tiempoTotal % 60);
+      
+      if (horas > 0) {
+        return `${horas}h ${minutos}min (${distanciaTotal.toFixed(2)} km total)`;
+      }
+      return `${minutos}min (${distanciaTotal.toFixed(2)} km total)`;
+    }
+
+    // Función para calcular descuento (con redondeo de porcentaje)
+    function calcularDescuento(cantidadPedidos, total) {
+      let descuento = 0;
+      
+      if (cantidadPedidos >= 2 && cantidadPedidos <= 3) {
+        descuento = 0.07; // 7%
+      } else if (cantidadPedidos >= 4 && cantidadPedidos <= 5) {
+        descuento = 0.15; // 15%
+      } else if (cantidadPedidos > 5) {
+        descuento = 0.20; // 20%
+      }
+      
+      const porcentajeRedondeado = Math.round(descuento * 100);
+      
+      return {
+        porcentaje: porcentajeRedondeado,
+        monto: total * descuento,
+        totalConDescuento: total * (1 - descuento)
+      };
+    }
+
+    // Función para ordenar pedidos por distancia (más cercano primero)
+    function ordenarPorDistancia(pedidos) {
+      return pedidos.sort((a, b) => parseFloat(a.distancia) - parseFloat(b.distancia));
+    }
+
+    // Autocompletado
+    let timeout;
+    direccionInput.addEventListener('input', () => {
+      clearTimeout(timeout);
+      const query = direccionInput.value;
+      if (query.length < 3) {
+        sugerencias.style.display = 'none';
+        return;
+      }
+      timeout = setTimeout(() => {
+        service.autosuggest({ q: query, at: "-31.63,-60.7" }, result => {
+          sugerencias.innerHTML = '';
+          result.items.filter(item => item.position).forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = item.title;
+            div.addEventListener('click', () => {
+              direccionInput.value = item.title;
+              latInput.value = item.position.lat;
+              lngInput.value = item.position.lng;
+              sugerencias.style.display = 'none';
+            });
+            sugerencias.appendChild(div);
+          });
+          sugerencias.style.display = 'block';
+        });
+      }, 300);
+    });
+
+    document.addEventListener('click', e => {
+      if (!direccionInput.contains(e.target) && !sugerencias.contains(e.target)) {
+        sugerencias.style.display = 'none';
+      }
+    });
+
+    // Formulario principal
+    document.getElementById('formulario').addEventListener('submit', function (e) {
+      e.preventDefault();
+      
+      precioDiv.textContent = '⌛ Calculando costo...';
+      precioDiv.className = 'info-warning info-box';
+      precioDiv.classList.remove('hidden');
+      
+      rechazoDiv.classList.add('hidden');
+      distanciaDiv.classList.add('hidden');
+      cargaRutaDiv.classList.remove('hidden');
+
+      const lat = parseFloat(latInput.value);
+      const lng = parseFloat(lngInput.value);
+
+      if (!lat || !lng) {
+        precioDiv.classList.add('hidden');
+        rechazoDiv.textContent = 'Por favor, seleccione una dirección válida desde el autocompletado.';
+        rechazoDiv.className = 'info-danger info-box';
+        rechazoDiv.classList.remove('hidden');
+        cargaRutaDiv.classList.add('hidden');
+        return;
+      }
+
+      const routingParams = {
+        routingMode: 'fast',
+        transportMode: 'car',
+        origin: '-31.647575240386356,-60.7053936347546',
+        destination: `${lat},${lng}`,
+        return: 'summary'
+      };
+
+      router.calculateRoute(routingParams, result => {
+        if (!result.routes || result.routes.length === 0) {
+          precioDiv.classList.add('hidden');
+          rechazoDiv.textContent = 'No se pudo calcular la ruta.';
+          rechazoDiv.className = 'info-danger info-box';
+          rechazoDiv.classList.remove('hidden');
+          cargaRutaDiv.classList.add('hidden');
+          return;
+        }
+
+        const distanceMeters = result.routes[0].sections[0].summary.length;
+        const distanceKm = distanceMeters / 1000;
+        distanciaDiv.textContent = `📏 Distancia: ${distanceKm.toFixed(2)} km`;
+        distanciaDiv.classList.remove('hidden');
+
+        let precio;
+        if (distanceKm < 1.5) precio = 1000;
+        else if (distanceKm < 3) precio = 1500;
+        else if (distanceKm < 4) precio = 1700;
+        else if (distanceKm < 5) precio = 2000;
+        else if (distanceKm < 6) precio = 2400;
+        else if (distanceKm < 7) precio = 2700;
+        else if (distanceKm < 8.5) precio = 3000;
+        else {
+          precioDiv.classList.add('hidden');
+          rechazoDiv.textContent = 'Lo sentimos, no realizamos envíos a esa distancia.';
+          rechazoDiv.className = 'info-danger info-box';
+          rechazoDiv.classList.remove('hidden');
+          cargaRutaDiv.classList.add('hidden');
+          return;
+        }
+
+        precioDiv.innerHTML = `💰 <span class="price">$${precio}</span><br>Costo del envío`;
+        precioDiv.className = 'info-success info-box';
+        precioDiv.classList.remove('hidden');
+        distanciaActual = distanceKm.toFixed(2);
+        precioActual = precio;
+        botones.classList.remove('hidden');
+        cargaRutaDiv.classList.add('hidden');
+      }, error => {
+        console.error(error);
+        precioDiv.classList.add('hidden');
+        rechazoDiv.textContent = 'Error al calcular la distancia.';
+        rechazoDiv.className = 'info-danger info-box';
+        rechazoDiv.classList.remove('hidden');
+        cargaRutaDiv.classList.add('hidden');
+      });
+    });
+
+    // Confirmar pedido
+    btnConfirmar.addEventListener('click', () => {
+      const cliente = document.getElementById('cliente').value;
+      const direccion = direccionInput.value;
+      const detalle = document.getElementById('detalle').value;
+      const telefono = document.getElementById('telefono').value;
+
+      pedidos.push({
+        cliente,
+        direccion,
+        detalle,
+        telefono,
+        distancia: distanciaActual,
+        precio: precioActual,
+        lat: latInput.value,
+        lng: lngInput.value
+      });
+
+      pedidosConfirmados++;
+      totalTarifa += precioActual;
+
+      const descuento = calcularDescuento(pedidosConfirmados, totalTarifa);
+      descuentoAplicado = descuento.monto;
+      totalConDescuento = descuento.totalConDescuento;
+
+      let mensajeAlerta = `✅ Pedido agregado.\n\nCantidad de envíos confirmados: ${pedidosConfirmados}\nTarifa total acumulada: $${totalTarifa.toFixed(2)}`;
+      
+      if (pedidosConfirmados >= 2) {
+        mensajeAlerta += `\n\nDescuento aplicado: ${descuento.porcentaje}%`;
+        mensajeAlerta += `\nTotal con descuento: $${totalConDescuento.toFixed(2)}`;
+        mensajeAlerta += `\nAhorro: $${descuentoAplicado.toFixed(2)}`;
+      }
+
+      alert(mensajeAlerta);
+      
+      // Calcular tiempo estimado con haversine
+      const tiempoEstimado = calcularTiempoEstimado(pedidos);
+      
+      if (pedidosConfirmados < 2) {
+        resumenDiv.innerHTML = `📦 Envíos confirmados: ${pedidosConfirmados} | 💰 Total: $${totalTarifa.toFixed(2)}<br>⏱ Tiempo estimado: ${tiempoEstimado}`;
+      } else {
+        resumenDiv.innerHTML = `
+          📦 Envíos confirmados: ${pedidosConfirmados} | 
+          💵 Base: <span class="strikethrough">$${totalTarifa.toFixed(2)}</span> | 
+          🎉 Total: <span class="discount">$${totalConDescuento.toFixed(2)}</span><br>
+          ⏱ Tiempo estimado: ${tiempoEstimado}
+        `;
+      }
+      
+      resumenDiv.classList.remove('hidden');
+
+      btnConfirmar.disabled = true;
+      btnConfirmar.textContent = '✔ Pedido confirmado';
+      btnConfirmar.className = 'btn btn-disabled';
+    });
+
+    // Agregar otro pedido
+    btnNuevo.addEventListener('click', () => {
+      document.getElementById('formulario').reset();
+      precioDiv.classList.add('hidden');
+      distanciaDiv.classList.add('hidden');
+      rechazoDiv.classList.add('hidden');
+      botones.classList.add('hidden');
+
+      btnConfirmar.disabled = false;
+      btnConfirmar.textContent = 'Confirmar pedido';
+      btnConfirmar.className = 'btn btn-primary';
+    });
+
+    // Enviar todos por WhatsApp (ordenados por distancia)
+    btnEnviar.addEventListener('click', async () => {
+      if (pedidos.length === 0) {
+        alert('No hay pedidos cargados.');
+        return;
+      }
+
+      // Ordenar pedidos por distancia (más cercano primero)
+      const pedidosOrdenados = ordenarPorDistancia(pedidos);
+      
+      // Calcular tiempo estimado con haversine
+      const tiempoEstimado = calcularTiempoEstimado(pedidosOrdenados);
+      
+      let mensaje = '📦 *Pedidos de Farmacia Timofiejuk:*\n\n';
+      pedidosOrdenados.forEach((p, i) => {
+        mensaje += `📍 *Parada ${i + 1}:*\n`;
+        mensaje += `👤 ${p.cliente}\n`;
+        mensaje += `🏠 ${p.direccion}\n`;
+        mensaje += `📞 ${p.telefono || 'Sin teléfono'}\n`;
+        mensaje += `📏 ${p.distancia} km desde farmacia\n`;
+        mensaje += `💵 $${p.precio}\n\n`;
+      });
+
+      // Resumen de pago
+      if (pedidosConfirmados >= 2) {
+        const descuento = calcularDescuento(pedidosConfirmados, totalTarifa);
+        mensaje += `💰 *Resumen de pago:*\n`;
+        mensaje += `Total sin descuento: $${totalTarifa.toFixed(2)}\n`;
+        mensaje += `Descuento (${descuento.porcentaje}%): -$${descuento.monto.toFixed(2)}\n`;
+        mensaje += `*Total a pagar: $${descuento.totalConDescuento.toFixed(2)}*\n\n`;
+      } else {
+        mensaje += `💰 *Total a pagar: $${totalTarifa.toFixed(2)}*\n\n`;
+      }
+      
+      // Agregar tiempo estimado al mensaje
+      mensaje += `⏱ *Tiempo estimado de entrega:* ${tiempoEstimado}`;
+
+      const url = `https://wa.me/5493424638698?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, '_blank');
+
+      // Reiniciar todo
+      pedidos = [];
+      pedidosConfirmados = 0;
+      totalTarifa = 0;
+      totalConDescuento = 0;
+      descuentoAplicado = 0;
+      resumenDiv.textContent = '';
+      resumenDiv.classList.add('hidden');
+      document.getElementById('formulario').reset();
+      botones.classList.add('hidden');
+      precioDiv.classList.add('hidden');
+      distanciaDiv.classList.add('hidden');
+      rechazoDiv.classList.add('hidden');
+      btnConfirmar.disabled = false;
+      btnConfirmar.textContent = 'Confirmar pedido';
+      btnConfirmar.className = 'btn btn-primary';
+    });
+  </script>
+</body>
+</html>

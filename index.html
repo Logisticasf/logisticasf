@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Farmacias | Logística</title>
+  <style>
+    :root {
+      --primary: #00C853;
+      --primary-dark: #009624;
+      --secondary: #536DFE;
+      --text: #2E3D49;
+      --text-light: #7F8C9A;
+      --background: #F5F7FA;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    
+    body {
+      background: var(--background);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      background-image: radial-gradient(circle at 10% 20%, rgba(176, 229, 208, 0.4) 0%, rgba(92, 202, 238, 0.05) 90%);
+    }
+    
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      perspective: 1000px;
+    }
+    
+    .login-card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transform-style: preserve-3d;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .login-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+    
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo img {
+      width: 120px;
+      height: 90px;
+      margin-bottom: 15px;
+    }
+    
+    h1 {
+      color: var(--text);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+    
+    .subtitle {
+      color: var(--text-light);
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 16px 20px 16px 45px;
+      border: 2px solid #E9EDF2;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background-color: #F9FAFC;
+      color: var(--text);
+    }
+    
+    .input-group input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.2);
+      background-color: white;
+    }
+    
+    .input-group input::placeholder {
+      color: #B1B9C7;
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #B1B9C7;
+    }
+    
+    .btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 200, 83, 0.4);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    #error {
+      color: #FF5252;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      display: none;
+      animation: shake 0.5s;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
+    }
+    
+    /* Efecto de onda al hacer clic */
+    .ripple {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="login-card">
+      <div class="logo">
+        <img src="https://raw.githubusercontent.com/Logisticasf/logisticasf/refs/heads/main/ic_launcher-Recovered2.png" alt="Logo Logística SF">
+        <h1>Ingrese usuario:</h1>
+        <p class="subtitle">Sistema de gestión logística</p>
+      </div>
+      
+      <div class="input-group">
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#7F8C9A">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+        <input type="text" id="usuario" autofocus>
+      </div>
+      
+      <button class="btn" onclick="validarUsuario()" id="loginBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white">
+          <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+        </svg>
+        Acceder
+      </button>
+      
+      <div id="error">¡Usuario no válido!</div>
+    </div>
+  </div>
+
+  <script>
+    // Lista de farmacias válidas
+    const farmaciasValidas = ['timofiejuk', 'farmacia2', 'farmacia3'];
+
+    // Efecto ripple para botones
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('btn')) {
+        const btn = e.target;
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        btn.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      }
+    });
+
+    // Cargar última farmacia al iniciar
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputUsuario = document.getElementById('usuario');
+      const ultimaFarmacia = localStorage.getItem('ultimaFarmacia');
+      
+      if (ultimaFarmacia && farmaciasValidas.includes(ultimaFarmacia)) {
+        inputUsuario.value = ultimaFarmacia;
+      }
+      
+      // Animación inicial
+      setTimeout(() => {
+        document.querySelector('.login-card').style.opacity = '1';
+        document.querySelector('.login-card').style.transform = 'translateY(0)';
+      }, 50);
+    });
+
+    // Validar y redirigir
+    function validarUsuario() {
+      const usuario = document.getElementById('usuario').value.trim().toLowerCase();
+      const errorDiv = document.getElementById('error');
+      const btn = document.getElementById('loginBtn');
+
+      // Animación de carga
+      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"/><path d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg> Validando...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        if (farmaciasValidas.includes(usuario)) {
+          localStorage.setItem('ultimaFarmacia', usuario);
+          btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg> ¡Acceso concedido!';
+          
+          setTimeout(() => {
+            window.location.href = `${usuario}.html`;
+          }, 800);
+        } else {
+          errorDiv.style.display = 'block';
+          btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg> Intentar nuevamente';
+          btn.disabled = false;
+        }
+      }, 800);
+    }
+
+    // Permitir acceso con "Enter"
+    document.getElementById('usuario').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') validarUsuario();
+    });
+  </script>
+</body>
+</html>
