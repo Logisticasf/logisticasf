@@ -1,21 +1,24 @@
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open('my-cache').then((cache) => {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/manifest.json',
-        '/android-chrome-192x192.png',
-        '/android-chrome-512x512.png'
-      ]);
-    })
+const CACHE  = "logistica-v1";
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./timofiejuk.html",
+  // agrega aquí ./farmacia2.html, ./estilos.css, etc. si los tienes
+];
+
+self.addEventListener("install", e => {
+  e.waitUntil(
+    caches.open(CACHE).then(cache => cache.addAll(ASSETS))
   );
 });
 
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
-    })
+self.addEventListener("fetch", e => {
+  e.respondWith(
+    caches.match(e.request).then(
+      res => res || fetch(e.request)
+    )
   );
 });
