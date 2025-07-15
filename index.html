@@ -298,47 +298,41 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./service-worker.js')
    .catch(err => console.error('SW falló:', err));
 }
-</script>
-<!-- Botón flotante de instalación -->
-<button id="installBtn"
-        style="display:none;position:fixed;bottom:20px;right:20px;
-               padding:14px 20px;border:none;border-radius:50px;
-               background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-               color:#fff;font-weight:600;box-shadow:0 4px 15px rgba(0,200,83,.3);
-               z-index:1000;">
-  Instalar App
-</button>
-
 <script>
   let deferredPrompt;
 
   window.addEventListener('beforeinstallprompt', (e) => {
-    // Bloqueamos el banner automático
     e.preventDefault();
     deferredPrompt = e;
-    // Mostramos nuestro propio botón
-    installBtn.style.display = 'block';
-  });
 
-  const installBtn = document.getElementById('installBtn');
+    // Crear botón
+    const btn = document.createElement('button');
+    btn.textContent = 'Instalar App';
+    btn.style.position = 'fixed';
+    btn.style.bottom = '20px';
+    btn.style.right = '20px';
+    btn.style.padding = '12px 20px';
+    btn.style.background = '#00C853';
+    btn.style.color = '#fff';
+    btn.style.border = 'none';
+    btn.style.borderRadius = '8px';
+    btn.style.fontSize = '16px';
+    btn.style.cursor = 'pointer';
+    btn.style.zIndex = '9999';
 
-  installBtn.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    // Lanza el diálogo nativo
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    // Ocultamos el botón, sea cual sea la decisión
-    installBtn.style.display = 'none';
-    deferredPrompt = null;
-    console.log('Resultado instalación:', outcome); // accepted | dismissed
-  });
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      await deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      console.log('Elección del usuario:', choiceResult.outcome); // accepted | dismissed
+      deferredPrompt = null;
+      btn.remove();
+    });
 
-  // Oculta el botón si la app ya está instalada
-  window.addEventListener('appinstalled', () => {
-    installBtn.style.display = 'none';
-    console.log('PWA instalada 🎉');
+    document.body.appendChild(btn);
   });
 </script>
+
 
 </body>
 </html>
