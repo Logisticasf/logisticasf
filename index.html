@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Logística SF | Gestión de Envíos Santa Fe Capital</title>
   <meta name="description" content="Sistema de logística especializado. Calculadora de tarifas y seguimiento de envíos.">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00C853">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
   
   <style>
     :root {
@@ -289,5 +293,13 @@
       if (e.key === 'Enter') validarUsuario();
     });
   </script>
+  <script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./service-worker.js")
+    .then(() => console.log("SW registrado"))
+    .catch(err => console.error("SW fallo:", err));
+}
+</script>
+
 </body>
 </html>
