@@ -335,6 +335,34 @@ if ('serviceWorker' in navigator) {
     document.body.appendChild(btn);
   });
 </script>
+<script>
+function esDispositivoMovil() {
+  return /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function mostrarInstruccionInstalacion() {
+  if (window.matchMedia('(display-mode: standalone)').matches) return; // Ya está instalada
+  if (!esDispositivoMovil()) return; // Solo mostrar en móviles
+
+  const banner = document.createElement('div');
+  banner.innerHTML = `
+    <div style="position:fixed;bottom:0;left:0;right:0;padding:15px;background:#00C853;color:#fff;font-size:15px;z-index:9999;text-align:center;">
+      Para instalar la app, abrí el menú del navegador (<b>⋮</b>) y tocá <b>"Agregar a pantalla de inicio"</b>.
+      <button id="cerrarBanner" style="margin-left:10px;background:white;color:#00C853;border:none;padding:5px 10px;border-radius:6px;font-weight:bold;">X</button>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  document.getElementById('cerrarBanner').addEventListener('click', () => {
+    banner.remove();
+  });
+}
+
+// Esperamos a que cargue la página
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(mostrarInstruccionInstalacion, 2000);
+});
+</script>
 
 
 </body>
