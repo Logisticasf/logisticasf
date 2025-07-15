@@ -3,8 +3,8 @@ const ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png",
+  "./android-chrome-192x192.png",
+  "./android-chrome-512x512.png",
   "./timofiejuk.html",
   // agrega aquí ./farmacia2.html, ./estilos.css, etc. si los tienes
 ];
