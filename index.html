@@ -9,7 +9,6 @@
   <meta name="theme-color" content="#00C853">
   <link rel="apple-touch-icon" href="android-chrome-192x192.png">
 
-  
   <style>
     :root {
       --primary: #00C853;
@@ -19,14 +18,14 @@
       --text-light: #7F8C9A;
       --background: #F5F7FA;
     }
-    
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
-    
+
     body {
       background: var(--background);
       display: flex;
@@ -36,13 +35,13 @@
       padding: 20px;
       background-image: radial-gradient(circle at 10% 20%, rgba(176, 229, 208, 0.4) 0%, rgba(92, 202, 238, 0.05) 90%);
     }
-    
+
     .app-container {
       width: 100%;
       max-width: 420px;
       perspective: 1000px;
     }
-    
+
     .login-card {
       background: white;
       border-radius: 16px;
@@ -53,12 +52,12 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .login-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
     }
-    
+
     .login-card::before {
       content: '';
       position: absolute;
@@ -68,18 +67,18 @@
       height: 6px;
       background: linear-gradient(90deg, var(--primary), var(--secondary));
     }
-    
+
     .logo {
       text-align: center;
       margin-bottom: 30px;
     }
-    
+
     .logo img {
       width: 120px;
       height: 90px;
       margin-bottom: 15px;
     }
-    
+
     h1 {
       color: var(--text);
       font-size: 1.8rem;
@@ -87,19 +86,19 @@
       margin-bottom: 5px;
       text-align: center;
     }
-    
+
     .subtitle {
       color: var(--text-light);
       text-align: center;
       margin-bottom: 30px;
       font-size: 0.95rem;
     }
-    
+
     .input-group {
       position: relative;
       margin-bottom: 25px;
     }
-    
+
     .input-group input {
       width: 100%;
       padding: 16px 20px 16px 45px;
@@ -110,18 +109,18 @@
       background-color: #F9FAFC;
       color: var(--text);
     }
-    
+
     .input-group input:focus {
       border-color: var(--primary);
       outline: none;
       box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.2);
       background-color: white;
     }
-    
+
     .input-group input::placeholder {
       color: #B1B9C7;
     }
-    
+
     .input-icon {
       position: absolute;
       left: 15px;
@@ -129,7 +128,7 @@
       transform: translateY(-50%);
       color: #B1B9C7;
     }
-    
+
     .btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
@@ -147,21 +146,21 @@
       justify-content: center;
       gap: 10px;
     }
-    
+
     .btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(0, 200, 83, 0.4);
     }
-    
+
     .btn:active {
       transform: translateY(0);
     }
-    
+
     .btn svg {
       width: 18px;
       height: 18px;
     }
-    
+
     #error {
       color: #FF5252;
       text-align: center;
@@ -170,14 +169,13 @@
       display: none;
       animation: shake 0.5s;
     }
-    
+
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-5px); }
       40%, 80% { transform: translateX(5px); }
     }
-    
-    /* Efecto de onda al hacer clic */
+
     .ripple {
       position: absolute;
       background: rgba(255, 255, 255, 0.4);
@@ -186,7 +184,7 @@
       animation: ripple 0.6s linear;
       pointer-events: none;
     }
-    
+
     @keyframes ripple {
       to {
         transform: scale(4);
@@ -223,30 +221,27 @@
   </div>
 
   <script>
-    // Lista de farmacias válidas
     const farmaciasValidas = ['timofiejuk', 'farmacia2', 'farmacia3'];
 
-    // Efecto ripple para botones
     document.addEventListener('click', function(e) {
       if (e.target.classList.contains('btn')) {
         const btn = e.target;
         const rect = btn.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
+
         const ripple = document.createElement('span');
         ripple.classList.add('ripple');
         ripple.style.left = `${x}px`;
         ripple.style.top = `${y}px`;
         btn.appendChild(ripple);
-        
+
         setTimeout(() => {
           ripple.remove();
         }, 600);
       }
     });
 
-    // Cargar última farmacia al iniciar
     document.addEventListener('DOMContentLoaded', () => {
       const inputUsuario = document.getElementById('usuario');
       const ultimaFarmacia = localStorage.getItem('ultimaFarmacia');
@@ -254,21 +249,18 @@
       if (ultimaFarmacia && farmaciasValidas.includes(ultimaFarmacia)) {
         inputUsuario.value = ultimaFarmacia;
       }
-      
-      // Animación inicial
+
       setTimeout(() => {
         document.querySelector('.login-card').style.opacity = '1';
         document.querySelector('.login-card').style.transform = 'translateY(0)';
       }, 50);
     });
 
-    // Validar y redirigir
     function validarUsuario() {
       const usuario = document.getElementById('usuario').value.trim().toLowerCase();
       const errorDiv = document.getElementById('error');
       const btn = document.getElementById('loginBtn');
 
-      // Animación de carga
       btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8A8 8 0 0 1 12 20Z" opacity=".5"/><path d="M20 12h2A10 10 0 0 0 12 2V4A8 8 0 0 1 20 12Z"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></path></svg> Validando...';
       btn.disabled = true;
 
@@ -288,27 +280,32 @@
       }, 800);
     }
 
-    // Permitir acceso con "Enter"
     document.getElementById('usuario').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') validarUsuario();
     });
   </script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js', { scope: './' })
-    .then(reg => console.log('SW listo 👉', reg.scope))
-    .catch(err => console.error('SW error', err));
-}
-</script>
-  <script>
 
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+        .then(reg => console.log('SW listo 👉', reg.scope))
+        .catch(err => console.error('SW error', err));
+    }
+  </script>
+
+ <script>
   let deferredPrompt;
 
+  // Mostrar botón solo si la app no está instalada
   window.addEventListener('beforeinstallprompt', (e) => {
+    if (window.matchMedia('(display-mode: standalone)').matches) return;
+
     e.preventDefault();
     deferredPrompt = e;
 
-    // Crear botón
+    // Evitar que se vuelva a mostrar si ya se instaló antes
+    if (localStorage.getItem('app_instalada') === 'true') return;
+
     const btn = document.createElement('button');
     btn.textContent = 'Instalar App';
     btn.style.position = 'fixed';
@@ -327,43 +324,23 @@ if ('serviceWorker' in navigator) {
       btn.disabled = true;
       await deferredPrompt.prompt();
       const choiceResult = await deferredPrompt.userChoice;
-      console.log('Elección del usuario:', choiceResult.outcome); // accepted | dismissed
+      console.log('Elección del usuario:', choiceResult.outcome);
+      
+      if (choiceResult.outcome === 'accepted') {
+        localStorage.setItem('app_instalada', 'true');
+      }
+
       deferredPrompt = null;
       btn.remove();
     });
 
     document.body.appendChild(btn);
   });
+
+  // También ocultamos si ya está instalada manualmente
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    localStorage.setItem('app_instalada', 'true');
+  }
 </script>
-<script>
-function esDispositivoMovil() {
-  return /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-}
-
-function mostrarInstruccionInstalacion() {
-  if (window.matchMedia('(display-mode: standalone)').matches) return; // Ya está instalada
-  if (!esDispositivoMovil()) return; // Solo mostrar en móviles
-
-  const banner = document.createElement('div');
-  banner.innerHTML = `
-    <div style="position:fixed;bottom:0;left:0;right:0;padding:15px;background:#00C853;color:#fff;font-size:15px;z-index:9999;text-align:center;">
-      Para instalar la app, abrí el menú del navegador (<b>⋮</b>) y tocá <b>"Agregar a pantalla de inicio"</b>.
-      <button id="cerrarBanner" style="margin-left:10px;background:white;color:#00C853;border:none;padding:5px 10px;border-radius:6px;font-weight:bold;">X</button>
-    </div>
-  `;
-  document.body.appendChild(banner);
-
-  document.getElementById('cerrarBanner').addEventListener('click', () => {
-    banner.remove();
-  });
-}
-
-// Esperamos a que cargue la página
-window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(mostrarInstruccionInstalacion, 2000);
-});
-</script>
-
-
 </body>
 </html>
