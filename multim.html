@@ -675,13 +675,13 @@
       // Calcular tiempo estimado con haversine
       const tiempoEstimado = calcularTiempoEstimado(pedidosOrdenados);
       
-      let mensaje = '📦 *Pedidos de Farmacia Timofiejuk:*\n\n';
+      let mensaje = '📦 *Pedidos de Multi Marcas:*\n\n';
       pedidosOrdenados.forEach((p, i) => {
         mensaje += `📍 *Parada ${i + 1}:*\n`;
         mensaje += `👤 ${p.cliente}\n`;
         mensaje += `🏠 ${p.direccion}\n`;
         mensaje += `📞 ${p.telefono || 'Sin teléfono'}\n`;
-        mensaje += `📏 ${p.distancia} km desde farmacia\n`;
+        mensaje += `📏 ${p.distancia} km desde MultiM\n`;
         mensaje += `💵 $${p.precio}\n\n`;
       });
 
